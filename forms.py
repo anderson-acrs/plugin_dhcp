@@ -21,14 +21,14 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
             'id_resp',            
         ]
 
-class DhcpFilterForm(BootstrapMixin, forms.ModelForm)
+class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
     q = forms.CharField(
     required=False,
     label="Buscador",
     )
     status = forms.CharField(
-        choices=BLANK_CHOICE,
-        required=False
+      #  choices=BLANK_CHOICE,
+        #required=False
     )
     class Meta:
         model = Dhcp

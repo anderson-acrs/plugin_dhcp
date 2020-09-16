@@ -22,17 +22,13 @@ class Dhcp(models.Model):
     ip_inicial = models.GenericIPAddressField()
     ip_final = models.GenericIPAddressField()
     data_criacao = models.DateTimeField('date published')
-    id_servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
-    id_resp = models.ForeignKey(
-        to='dhcpd.Dhcp',
-        on_delete=models.PROTECT,
-        related_name='responsavel',
-    )
+    id_servico = models.ForeignKey(Servico, on_delete=models.PROTECT)
+    id_resp = models.ForeignKey('Responsavel', on_delete=models.PROTECT)
 
 class Ipfixo(models.Model):
     id_ipfixo = models.AutoField(primary_key=True)
-    id_prefixes = models.ForeignKey(Dhcp, on_delete=models.CASCADE)
-    mac = models.CharField(max_length=16)
+    id_prefixes = models.ForeignKey(Dhcp, on_delete=models.PROTECT)
+    mac = models.CharField(max_length=17)
     ip_host = models.GenericIPAddressField()
     host = models.CharField(max_length=20)
     defaultleasetime = models.IntegerField()
