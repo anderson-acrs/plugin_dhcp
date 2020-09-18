@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from .forms import DhcpForm
 from .models import Dhcp
+from .forms import DhcpForm, DhcpFilterForm
+from .filter import DhcpFilter
+from .tables import DhcpTable
 from django.views import View
 from  utilities.views import ObjectListView
 
@@ -17,4 +19,7 @@ class DhcpView(PermissionRequiredMixin, View):
 class DhcpListView (ObjectListView):
     permission_required = 'dhcpd.view_dhcplistview'
     queryset = Dhcp.objects.all()
+    filterset = DhcpFilter
+    filterset_form = DhcpFilterForm
+    table = DhcpTable
     template_name = 'dhcpd/dhcp_list.html'

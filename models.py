@@ -1,4 +1,5 @@
 from django.db import models
+from .choices import DhcpChoices
 
 # Create your models here.
 
@@ -18,7 +19,7 @@ class Dhcp(models.Model):
     id_domain = models.IntegerField()
     gateway = models.GenericIPAddressField()
     opcao = models.IntegerField()
-    tipo = models.CharField(max_length=4)
+    tipo = models.CharField(max_length=9, choices=DhcpChoices, default=DhcpChoices.TIPO_BOTH,)
     ip_inicial = models.GenericIPAddressField()
     ip_final = models.GenericIPAddressField()
     data_criacao = models.DateTimeField('date published')

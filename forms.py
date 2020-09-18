@@ -1,6 +1,6 @@
 from django import forms
 from utilities.forms import BootstrapMixin
-from .models import Dhcp
+from .models import Dhcp, DhcpChoices
 
 BLANK_CHOICE = (("", "---------"),)
 
@@ -26,9 +26,9 @@ class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
     required=False,
     label="Buscador",
     )
-    status = forms.CharField(
-      #  choices=BLANK_CHOICE,
-        #required=False
+    tipo = forms.ChoiceField(
+        choices=BLANK_CHOICE + DhcpChoices.CHOICES,
+        required=False
     )
     class Meta:
         model = Dhcp
@@ -36,5 +36,6 @@ class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
             'q',
             'prefixes',
             'gateway',
+            'tipo',
             'ip_inicial',
         ]
