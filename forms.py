@@ -18,6 +18,7 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
             'ip_inicial',
             'ip_final',
             'data_criacao',
+            'id_servico',
             'id_resp',            
         ]
 

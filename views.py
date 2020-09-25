@@ -5,13 +5,14 @@ from .forms import DhcpForm, DhcpFilterForm
 from .filter import DhcpFilter
 from .tables import DhcpTable
 from django.views import View
-from  utilities.views import ObjectListView, ObjectEditView, ObjectDeleteView
+from  utilities.views import ObjectListView, ObjectEditView, ObjectDeleteView, BulkDeleteView
 
 # Create your views here.
 class DhcpView(PermissionRequiredMixin, View): 
     permission_required = 'dhcpd.dhcp_view'
-    def get(self,request):
-       # d = get_object_or_404(Dhcp.objects.filter(id_prefixes=pk))
+    def get(self,request, pk):
+        id = get_object_or_404(Dhcp.objects.filter(id_prefixes=pk))
+        
         dhcp = Dhcp.objects.all()
         return render(request, 'dhcpd/dhcp_list.html',{
             'dhcp_list': dhcp,
@@ -40,3 +41,9 @@ class DhcpDeleteView(ObjectDeleteView):
     permission_required = 'dhcpd.delete_dhcp'
     model = Dhcp
     default_return_url = 'dhcpd:dhcp_list'
+
+class DhcpBulkDeleteView(BulkDeleteView):
+    permission_required = 'dhcpd.delete_dhcp'
+    queryset = Dhcp.objects.filter()
+    table = DhcpTable
+    template_name = 'dhcpd/dhcp_list.html'
