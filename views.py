@@ -10,7 +10,7 @@ from  utilities.views import ObjectListView, ObjectEditView, ObjectDeleteView, B
 # Create your views here.
 #Bloco DHCP
 class DhcpView(PermissionRequiredMixin, View): 
-    """este e um comentario """
+    
     permission_required = 'dhcpd.dhcp_view'        
     def get(self, request, pk):
         dhcp = get_object_or_404(Dhcpd.objects.filter(id_prefixes=pk))
@@ -47,10 +47,5 @@ class DhcpBulkDeleteView(BulkDeleteView):
     queryset = Dhcp.objects.filter()
     table = DhcpTable
     default_return_url = 'dhcpd:dhcp_list'
-    #template_name = 'dhcpd/dhcp_list.html'
-
-
-   #Bloco IP FIXO
-
    
 

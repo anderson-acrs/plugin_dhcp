@@ -26,16 +26,12 @@ class Dhcp(models.Model):
     id_servico = models.ForeignKey(Servico, on_delete=models.PROTECT)
     id_resp = models.ForeignKey('Responsavel', on_delete=models.PROTECT)
     
-    # class Meta:
-    #     ordering = ['id_prefixes']
-    #     verbose_name = 'id'
-    #     verbose_name_plural = 'Id Prefixes'
-        
-    # def __str__(self):
-    #     return  {self.prefixes} 
+       
+    def __str__(self):
+        return  {self.id_prefixes} 
 
-    # def get_absolute_url(self):
-    #     return reverse('dhcpd:dhcp', args=[self.pk], kwargs={"pk": self.pk})
+    def get_absolute_url(self):
+        return reverse('dhcpd:dhcp', args=[self.pk], kwargs={"pk": self.pk})
 
 
 class Ipfixo(models.Model):
