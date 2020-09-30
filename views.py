@@ -8,7 +8,9 @@ from django.views import View
 from  utilities.views import ObjectListView, ObjectEditView, ObjectDeleteView, BulkDeleteView
 
 # Create your views here.
+
 #Bloco DHCP
+"""Agrupa as Views da classe DHCP"""
 class DhcpView(PermissionRequiredMixin, View): 
     
     permission_required = 'dhcpd.dhcp_view'        
@@ -47,5 +49,3 @@ class DhcpBulkDeleteView(BulkDeleteView):
     queryset = Dhcp.objects.filter()
     table = DhcpTable
     default_return_url = 'dhcpd:dhcp_list'
-   
-

@@ -1,5 +1,6 @@
 from django.db import models
-from .choices import DhcpChoices
+from django.urls import reverse
+from .choices import DhcpChoices, DhcpOpcaoChoices
 
 # Create your models here.
 
@@ -18,7 +19,7 @@ class Dhcp(models.Model):
     netmask = models.GenericIPAddressField()
     id_domain = models.IntegerField()
     gateway = models.GenericIPAddressField()
-    opcao = models.IntegerField()
+    opcao = models.CharField(max_length=2, choices=DhcpOpcaoChoices, default=DhcpOpcaoChoices.TIPO_43,)
     tipo = models.CharField(max_length=9, choices=DhcpChoices, default=DhcpChoices.TIPO_BOTH,)
     ip_inicial = models.GenericIPAddressField()
     ip_final = models.GenericIPAddressField()
@@ -28,10 +29,11 @@ class Dhcp(models.Model):
     
        
     def __str__(self):
-        return  {self.id_prefixes} 
+        return  self.tipo
 
     def get_absolute_url(self):
-        return reverse('dhcpd:dhcp', args=[self.pk], kwargs={"pk": self.pk})
+        return reverse('dhcpd:dhcp', args=[self.pk])
+        #return reverse('dhcpd:dhcp', args=[self.pk], kwargs={"pk": self.pk})
 
 
 class Ipfixo(models.Model):
