@@ -8,14 +8,14 @@ from django.views import View
 from  utilities.views import ObjectListView, ObjectEditView, ObjectDeleteView, BulkDeleteView
 
 # Create your views here.
+#Bloco DHCP
 class DhcpView(PermissionRequiredMixin, View): 
-    permission_required = 'dhcpd.dhcp_view'
-    def get(self,request, pk):
-        id = get_object_or_404(Dhcp.objects.filter(id_prefixes=pk))
-        
-        dhcp = Dhcp.objects.all()
-        return render(request, 'dhcpd/dhcp_list.html',{
-            'dhcp_list': dhcp,
+    """este e um comentario """
+    permission_required = 'dhcpd.dhcp_view'        
+    def get(self, request, pk):
+        dhcp = get_object_or_404(Dhcpd.objects.filter(id_prefixes=pk))
+        return render(request, 'dhcpd/dhcp.html', {
+           'dhcp': dhcp
         })
         
 class DhcpListView (ObjectListView):
@@ -46,4 +46,11 @@ class DhcpBulkDeleteView(BulkDeleteView):
     permission_required = 'dhcpd.delete_dhcp'
     queryset = Dhcp.objects.filter()
     table = DhcpTable
-    template_name = 'dhcpd/dhcp_list.html'
+    default_return_url = 'dhcpd:dhcp_list'
+    #template_name = 'dhcpd/dhcp_list.html'
+
+
+   #Bloco IP FIXO
+
+   
+

@@ -5,9 +5,9 @@ from .models import Dhcp
 
 class DhcpTable(BaseTable):
     pk = ToggleColumn()
-    ip_prefixes = tables.LinkColumn(    
+    prefixes = tables.LinkColumn(    
         viewname='dhcpd:dhcp',
-        args=[Accessor('id_prefixes')]
+        args=[Accessor('pk')]
     )
     class Meta(BaseTable.Meta):
         model = Dhcp

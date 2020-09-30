@@ -8,6 +8,13 @@
 </div>
 <h1>{% block title %}Lista de DHCPs{% endblock %}</h1>
 <div class="row">	
+	<div class="col-md-9 noprint">
+		<!-- <h1>Aqui sera a tabela</h1> -->
+	{% include 'utilities/obj_table.html' with bulk_delete_url='dhcpd:dhcp_bulk_delete' %}
+	{% if perms.dhcp.change_dhcp %}
+	{% edit_button device %}
+	{% endif %}
+	</div>
 	<div class="col-md-3 noprint">
 		{% include 'inc/search_panel.html' %}
 	</div>

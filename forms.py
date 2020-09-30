@@ -27,16 +27,14 @@ class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
     required=False,
     label="Buscador",
     )
-    tipo = forms.ChoiceField(
-        choices=BLANK_CHOICE + DhcpChoices.CHOICES,
-        required=False
-    )
+    # tipo = forms.ChoiceField(
+    #     choices=BLANK_CHOICE + DhcpChoices.CHOICES,
+    #     required=False
+    # )
     class Meta:
         model = Dhcp
         fields = [
             'q',
-            'prefixes',
-            'gateway',
-            'tipo',
-            'ip_inicial',
+            # 'prefixes',
+            # 'gateway',           
         ]
