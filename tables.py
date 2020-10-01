@@ -6,7 +6,7 @@ from .models import Dhcp
 class DhcpTable(BaseTable):
     pk = ToggleColumn()
     prefixes = tables.LinkColumn(    
-        viewname='dhcpd:dhcp',
+        viewname='dhcpd:dhcp_edit',
         args=[Accessor('pk')]
     )
     class Meta(BaseTable.Meta):

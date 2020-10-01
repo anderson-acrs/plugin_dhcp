@@ -29,10 +29,10 @@ class Dhcp(models.Model):
     
        
     def __str__(self):
-        return  self.tipo
+        return  self.prefixes
 
     def get_absolute_url(self):
-        return reverse('dhcpd:dhcp', args=[self.pk])
+        return reverse('dhcpd:dhcp_list')
         #return reverse('dhcpd:dhcp', args=[self.pk], kwargs={"pk": self.pk})
 
 

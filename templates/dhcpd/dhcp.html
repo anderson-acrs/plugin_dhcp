@@ -4,11 +4,13 @@
 {% load helpers %}
 {% load plugins %}
 {% block content %}
+<h1>teste</h1>
 <div class="row noprint">
     <div class="col-sm-8 col-md-9">
         <ol class="breadcrumb">
             <li><a href="{% url 'dhcpd:dhcp_list' %}">lista de dhcps</a></li>            
-            <li>{{ dhcp }}</li>
+            <li>{{ dhcp.prefixes}}</li>
+            <h1>teste2</h1>
         </ol>
     </div>
     <div class="col-sm-4 col-md-3">
@@ -19,6 +21,7 @@
                     <button type="submit" class="btn btn-primary">
                         <span class="fa fa-search" aria-hidden="true"></span>
                     </button>
+                    <h1>teste3</h1>
                 </span>
             </div>
         </form>
@@ -27,9 +30,7 @@
 <div class="row">
     <div class="col-md-12">
         {% plugin_full_width_page dhcp %}
+        <h1>teste4</h1>
     </div>
 </div>
-
-
-
 {% endblock %}
