@@ -1,11 +1,12 @@
 from django import forms
 from utilities.forms import BootstrapMixin
-from .models import Dhcp, DhcpChoices
+from .models import Dhcp, DhcpChoices, Ipfixo, Responsavel
 
 BLANK_CHOICE = (("", "---------"),)
 
 
 class DhcpForm(BootstrapMixin, forms.ModelForm):
+    """ classe destinada ao model dhcp"""
     class Meta:
         model = Dhcp
         fields = [
@@ -23,6 +24,7 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
         ]
 
 class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
+    """ classe destinada ao model dhcp"""
     q = forms.CharField(
     required=False,
     label="Buscador",
@@ -37,4 +39,40 @@ class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
             'q',
             # 'prefixes',
             # 'gateway',           
+        ]
+
+
+class IpfixoForm(BootstrapMixin, forms.ModelForm):
+    """ classe destinada ao model Ipfixo"""
+    class Meta:
+        model = Ipfixo
+        fields = [
+            'id_prefixes'           ,
+            'mac',
+            'ip_host',
+            'host',
+            'defaultleasetime',
+            'maxleasetime',
+        ]
+class IpfixoFilterForm(BootstrapMixin, forms.ModelForm):
+    """ classe destinada ao model Ipfixo"""
+    q = forms.CharField(
+    required=False,
+    label="Buscador",
+    )
+    class Meta:
+        model = Ipfixo
+        fields = [
+            'q',
+            'host',
+                    
+        ]
+class ResponsavelForm(BootstrapMixin, forms.ModelForm):
+    """ classe destinada ao model Responsavel"""
+    class Meta:
+        model = Responsavel
+        fields = [
+            'id_resp',
+            'nome',            
+            'contato',
         ]

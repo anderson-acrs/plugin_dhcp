@@ -15,4 +15,8 @@ urlpatterns = [
     # path('api/', include('appview.api.urls')),
     # path('random/', views.RandomSwitchView.as_view(), name='random_switch'),
 
+    #Responsavel
+    path('responsavel/add/', views.ResponsavelTemplateCreateView.as_view(), name='responsavel_add' )
+    
+
 ] 
