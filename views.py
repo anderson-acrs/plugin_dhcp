@@ -70,7 +70,7 @@ class ResponsavelView(PermissionRequiredMixin, View):
             ResponsavelTable.objects.filter(responsavel=responsavel),
             orderable = false
         )
-        return render(request, 'dhcpd/responsavel.html', {
+        return render(request, 'dhcpd/responsavel_add.html', {
             'responsavel': responsavel,
         })
 
