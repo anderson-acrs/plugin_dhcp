@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class DhcpdConfig(AppConfig):
-    name = 'dhcpd'
+class DhcpConfig(AppConfig):
+    name = 'dhcp'

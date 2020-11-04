@@ -1,28 +1,27 @@
-
 {% extends 'base.html' %}
 {% load buttons %}
 {% block content %}
-{% with config=settings.PLUGINS_CONFIG.dhcpd %}
+{% with config=settings.PLUGINS_CONFIG.dhcp %}
 <div class="pull-right noprint">
-    {% add_button 'dhcpd:dhcp_add' %}
+    {% add_button 'plugins:dhcp:ipfixo_add' %}
     <!-- botao de componentes aqui -->
-	{% if perms.dhcpd.change_dhcp%}
+	{% if perms.dhcp.change_dhcp%}
     
     {% endif %}
     <!-- fim_botao componentes -->
 </div>
-<h1>{% block title %}Lista de DHCPs{% endblock %}</h1>
+<h1>{% block title %}Lista de Ip Fixos{% endblock %}</h1>
 <div class="row">	
 	<div class="col-md-9 noprint">	       
-    {% include 'utilities/obj_table.html' with bulk_delete_url='dhcpd:dhcp_bulk_delete' %}
+    {% include 'utilities/obj_table.html' with bulk_delete_url='plugins:dhcp:ipfixo_bulk_delete' %}
     
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Components <span class="caret"></span>
         </button>
          <ul class="dropdown-menu">
-             {% if perms.dhcpd.add_responsavel %}
-                <li><a href="{% url 'dhcpd:responsavel_add' %}">Responsavel</a></li>
-                <!-- <li><a href="{% url 'dhcpd:responsavel_add' %}?responsavel={{ responsavel.pk }}&return_url={{ responsavel.get_absolute_url }}">Responsavel</a></li> -->
+             {% if perms.dhcp.add_responsavel %}
+                <li><a href="{% url 'plugins:dhcp:responsavel_add' %}">Responsavel</a></li>
+                <!-- <li><a href="{% url 'plugins:dhcp:responsavel_add' %}?responsavel={{ responsavel.pk }}&return_url={{ responsavel.get_absolute_url }}">Responsavel</a></li> -->
             {% endif %}
         </ul>
     </div>
@@ -33,6 +32,3 @@
 </div>
 {% endwith %}
 {% endblock %}
-
-
-

@@ -7,7 +7,7 @@ class DhcpTable(BaseTable):
     """ classe destinada ao model dhcp"""
     pk = ToggleColumn()
     prefixes = tables.LinkColumn(    
-        viewname='dhcpd:dhcp_edit',
+        viewname='plugins:dhcpd:dhcp_edit',
         args=[Accessor('pk')]
     )
     class Meta(BaseTable.Meta):
@@ -18,7 +18,7 @@ class DhcpTable(BaseTable):
             'prefixes',
             'id_domain',
             'gateway',
-            'opcao',
+            'option',
             'tipo',
             'ip_inicial',
             'ip_final',
@@ -28,7 +28,7 @@ class IpfixoTable(BaseTable):
     """ classe destinada ao model ipfixo"""
     pk = ToggleColumn()
     host = tables.LinkColumn(
-        viewname = 'dhcpd:dhcp_edit',
+        viewname = 'plugins:dhcpd:dhcp_edit',
         args = [Accessor('pk')]
     )
 
@@ -37,10 +37,10 @@ class IpfixoTable(BaseTable):
         model = Ipfixo
         fields = (
             'pk',
-            'mac',
+            'mac_address',
             'ip_host',
             'host',
-
+            
         )
 class ResponsavelTable(BaseTable):
     """ classe destinada ao model Responsavel"""

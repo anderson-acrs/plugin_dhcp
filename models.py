@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from .choices import DhcpChoices, DhcpOpcaoChoices
+from datetime import date, datetime
 
 # Create your models here.
 
@@ -19,12 +20,13 @@ class Dhcp(models.Model):
     netmask = models.GenericIPAddressField()
     id_domain = models.IntegerField()
     gateway = models.GenericIPAddressField()
-    opcao = models.CharField(max_length=2, choices=DhcpOpcaoChoices, default=DhcpOpcaoChoices.TIPO_43,)
-    tipo = models.CharField(max_length=9, choices=DhcpChoices, default=DhcpChoices.TIPO_BOTH,)
+    option = models.CharField(max_length=2, choices=DhcpOpcaoChoices, default=DhcpOpcaoChoices.TIPO_43,)
+    tipo = models.CharField(max_length=9, choices=DhcpChoices, default=DhcpChoices.TIPO_IPV4,)
     ip_inicial = models.GenericIPAddressField()
     ip_final = models.GenericIPAddressField()
-    data_criacao = models.DateTimeField('date published')
-    id_servico = models.ForeignKey(Servico, on_delete=models.PROTECT)
+    #data_criacao = models.DateTimeField('date published')
+    data_criacao = models.DateTimeField(default=datetime.now())
+    id_service = models.ForeignKey(Servico, on_delete=models.PROTECT)
     id_resp = models.ForeignKey('Responsavel', on_delete=models.PROTECT)
     
        
@@ -32,19 +34,24 @@ class Dhcp(models.Model):
         return  self.prefixes
 
     def get_absolute_url(self):
-        return reverse('dhcpd:dhcp_list')
+        return reverse('dhcp:dhcp_list')
         #return reverse('dhcpd:dhcp', args=[self.pk], kwargs={"pk": self.pk})
 
 
 class Ipfixo(models.Model):
     id_ipfixo = models.AutoField(primary_key=True)
     id_prefixes = models.ForeignKey(Dhcp, on_delete=models.PROTECT)
-    mac = models.CharField(max_length=17)
+    mac_address = models.CharField(max_length=17)
     ip_host = models.GenericIPAddressField()
     host = models.CharField(max_length=20)
     defaultleasetime = models.IntegerField()
     maxleasetime = models.IntegerField()
 
+    def __str__(self):
+        return  self.host
+
+    def get_absolute_url(self):
+        return reverse('dhcp:ipfixo_list')
 class Responsavel(models.Model):
     id_resp = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=20)

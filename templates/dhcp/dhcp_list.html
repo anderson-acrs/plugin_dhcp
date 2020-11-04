@@ -1,0 +1,38 @@
+
+{% extends 'base.html' %}
+{% load buttons %}
+{% block content %}
+{% with config=settings.PLUGINS_CONFIG.dhcp %}
+<div class="pull-right noprint">
+    {% add_button 'plugins:dhcp:dhcp_add' %}
+    <!-- botao de componentes aqui -->
+	{% if perms.dhcp.change_dhcp%}
+    
+    {% endif %}
+    <!-- fim_botao componentes -->
+</div>
+<h1>{% block title %}Lista de DHCPs{% endblock %}</h1>
+<div class="row">	
+	<div class="col-md-9 noprint">	       
+    {% include 'utilities/obj_table.html' with bulk_delete_url='plugins:dhcp:dhcp_bulk_delete' %}
+    
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Components <span class="caret"></span>
+        </button>
+         <ul class="dropdown-menu">
+             {% if perms.dhcp.add_responsavel %}
+                <li><a href="{% url 'plugins:dhcp:responsavel_add' %}">Responsavel</a></li>
+                <!-- <li><a href="{% url 'plugins:dhcp:responsavel_add' %}?responsavel={{ responsavel.pk }}&return_url={{ responsavel.get_absolute_url }}">Responsavel</a></li> -->
+            {% endif %}
+        </ul>
+    </div>
+      
+	<div class="col-md-3 noprint">
+		{% include 'inc/search_panel.html' %}
+	</div>
+</div>
+{% endwith %}
+{% endblock %}
+
+
+

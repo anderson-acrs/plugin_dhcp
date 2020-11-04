@@ -1,10 +1,10 @@
 from extras.plugins import PluginConfig
 
-class DhcpdConfig(PluginConfig):
+class DhcpConfig(PluginConfig):
     name = 'dhcp'
     verbose_name = 'dhcp'
     description = 'An example plugin for development purposes'
-    version = '0.0.1'
+    version = '1.0.1'
     author = 'anderson claudio'
     author_email = 'anderson.acrs@gmail.com'
     base_url = 'dhcp'
@@ -13,4 +13,4 @@ class DhcpdConfig(PluginConfig):
         'loud': False
     }
 
-config = DhcpdConfig
+config = DhcpConfig

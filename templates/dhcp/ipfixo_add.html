@@ -1,0 +1,14 @@
+{% extends 'utilities/obj_edit.html' %}
+{% load form_helpers %}
+{% block title %}
+Adicionando Novo IP fixo
+
+{% endblock %}
+{% block form %}
+    <div class="panel panel-default">
+        <div class="panel-heading"><strong>Preencha todos os campos </strong></div>
+        <div class="panel-body">
+            {% render_form form %}
+        </div>
+    </div>
+{% endblock %}

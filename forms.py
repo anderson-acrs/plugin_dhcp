@@ -14,12 +14,12 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
             'netmask',
             'id_domain',
             'gateway',
-            'opcao',
+            'option',
             'tipo',
             'ip_inicial',
             'ip_final',
             'data_criacao',
-            'id_servico',
+            'id_service',
             'id_resp',            
         ]
 
@@ -47,8 +47,8 @@ class IpfixoForm(BootstrapMixin, forms.ModelForm):
     class Meta:
         model = Ipfixo
         fields = [
-            'id_prefixes'           ,
-            'mac',
+            'id_prefixes' ,
+            'mac_address',
             'ip_host',
             'host',
             'defaultleasetime',
