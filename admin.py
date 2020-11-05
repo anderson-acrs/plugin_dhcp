@@ -6,7 +6,7 @@ from .models import Dhcp, Ipfixo, Responsavel, Servico
 
 @admin.register(Dhcp)
 class DhcpAdmin(admin.ModelAdmin):
-   list_display = ('prefixes', 'netmask', 'id_domain', 'gateway', 'option', 'tipo', 'ip_inicial', 'ip_final', 'data_criacao')
+   list_display = ('prefixes', 'netmask', 'id_domain', 'gateway', 'option', 'tipo', 'ip_inicial', 'ip_final', 'data_criacao', 'defaultleasetime','maxleasetime')
 
 
 @admin.register(Responsavel)
@@ -15,7 +15,7 @@ class ResponsavelAdmin(admin.ModelAdmin):
 
 @admin.register(Ipfixo)
 class IpfixoAdmin(admin.ModelAdmin):
-    list_display = ('id_prefixes', 'mac_address', 'ip_host', 'host', 'defaultleasetime','maxleasetime' )
+    list_display = ('id_prefixes', 'mac_address', 'ip_host', 'host' )
     
 @admin.register(Servico)
 class ServicoAdmin(admin.ModelAdmin):
