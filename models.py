@@ -1,8 +1,10 @@
 from django.db import models
+from ipam.models import Prefix
 from django.urls import reverse
 from .choices import DhcpChoices, DhcpOpcaoChoices
 #from datetime import date, datetime
 from django.utils import timezone
+#from django.utils.timezone import now
 
 # Create your models here.
 
@@ -25,9 +27,12 @@ class Dhcp(models.Model):
     tipo = models.CharField(max_length=9, choices=DhcpChoices, default=DhcpChoices.TIPO_IPV4,)
     ip_inicial = models.GenericIPAddressField()
     ip_final = models.GenericIPAddressField()
+    id_service = models.ForeignKey(Servico, on_delete=models.PROTECT)
+    id_resp = models.ForeignKey('Responsavel', on_delete=models.PROTECT)
+    defaultleasetime = models.IntegerField(default=None)
+    maxleasetime = models.IntegerField(default=None)    
+    data_criacao = models.DateTimeField(default=timezone.now())    
     #data_criacao = models.DateTimeField('date published')
-    data_criacao = models.DateTimeField(default=timezone.now())
-    #data_criacao = models.DateTimeField(django.utils.datetime.now())
     # device = models.ForeignKey(
     #     to='dcim.Device',
     #     on_delete=models.CASCADE,
@@ -37,10 +42,7 @@ class Dhcp(models.Model):
     #     blank=True,
         
     # )
-    id_service = models.ForeignKey(Servico, on_delete=models.PROTECT)
-    id_resp = models.ForeignKey('Responsavel', on_delete=models.PROTECT)
-    defaultleasetime = models.IntegerField()
-    maxleasetime = models.IntegerField()
+    
        
     def __str__(self):
         return  self.prefixes 
@@ -54,8 +56,17 @@ class Dhcp(models.Model):
 
 
 class Ipfixo(models.Model):
-    id_ipfixo = models.AutoField(primary_key=True)
-    id_prefixes = models.ForeignKey(Dhcp, on_delete=models.PROTECT)
+    id_ipfixo = models.AutoField(primary_key=True) 
+    id_prefixes = models.ForeignKey(Dhcp, on_delete=models.PROTECT)   
+    prefix = models.OneToOneField(
+        to='ipam.Prefix',
+        on_delete=models.SET_NULL,
+        related_name='+',
+        blank=True,
+        null=True,
+        verbose_name='Prefix'
+    )
+
     mac_address = models.CharField(max_length=17)
     ip_host = models.GenericIPAddressField()
     host = models.CharField(max_length=20)

@@ -2,15 +2,19 @@ from django import forms
 from utilities.forms import BootstrapMixin
 from .models import Dhcp, DhcpChoices, Ipfixo, Responsavel
 
+
+
 BLANK_CHOICE = (("", "---------"),)
 
 
 class DhcpForm(BootstrapMixin, forms.ModelForm):
     """ classe destinada ao model dhcp"""
+
     class Meta:
         model = Dhcp
         fields = [
             'prefixes', 
+            #'prefix',
             'netmask',
             'id_domain',
             'gateway',
@@ -52,6 +56,7 @@ class IpfixoForm(BootstrapMixin, forms.ModelForm):
         model = Ipfixo
         fields = [
             'id_prefixes' ,
+            'prefix',
             'mac_address',
             'ip_host',
             'host',

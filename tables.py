@@ -30,7 +30,7 @@ class IpfixoTable(BaseTable):
     """ classe destinada ao model ipfixo"""
     pk = ToggleColumn()
     host = tables.LinkColumn(
-        viewname = 'plugins:dhcp:dhcp_edit',
+        viewname = 'plugins:dhcp:ipfixo_edit',
         args = [Accessor('pk')]
     )
 
@@ -39,6 +39,7 @@ class IpfixoTable(BaseTable):
         model = Ipfixo
         fields = (
             'pk',
+            'prefix',
             'mac_address',
             'ip_host',
             'host',
