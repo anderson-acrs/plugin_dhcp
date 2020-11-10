@@ -13,8 +13,8 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
     class Meta:
         model = Dhcp
         fields = [
-            'prefixes', 
-            #'prefix',
+            #'prefixes', 
+            'prefix',
             'netmask',
             'id_domain',
             'gateway',
@@ -23,7 +23,7 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
             'ip_inicial',
             'ip_final',
             'data_criacao',
-            'id_service',
+            'ipaddresses',
             #'device',
             'defaultleasetime',
             'maxleasetime',

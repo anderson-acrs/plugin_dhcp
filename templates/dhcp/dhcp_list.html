@@ -1,13 +1,18 @@
 
 {% extends 'base.html' %}
 {% load buttons %}
+{% load helpers %}
 {% block content %}
+{% load custom_links %}
+{% load plugins %}
+
 {% with config=settings.PLUGINS_CONFIG.dhcp %}
 <div class="pull-right noprint">
     {% add_button 'plugins:dhcp:dhcp_add' %}
     <!-- botao de componentes aqui -->
-	{% if perms.dhcp.change_dhcp%}
-    
+    {% if perms.dhcp.change_dhcp%}{% endif %}
+    {% if request.user.is_authenticated and table_config_form %}
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#tableconfig" title="Configure table"><i class="fa fa-cog"></i> Configure</button>
     {% endif %}
     <!-- fim_botao componentes -->
 </div>
@@ -25,6 +30,9 @@
                 <!-- <li><a href="{% url 'plugins:dhcp:responsavel_add' %}?responsavel={{ responsavel.pk }}&return_url={{ responsavel.get_absolute_url }}">Responsavel</a></li> -->
             {% endif %}
         </ul>
+        {% if table_config_form %}
+            {% include 'inc/table_config_form.html' %}
+        {% endif %}
     </div>
       
 	<div class="col-md-3 noprint">

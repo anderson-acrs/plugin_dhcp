@@ -20,7 +20,7 @@ class DhcpView(PermissionRequiredMixin, View):
            'dhcp': dhcp
         })
         
-class DhcpListView (PermissionRequiredMixin, ObjectListView):
+class DhcpListView (PermissionRequiredMixin, ObjectListView ):
     permission_required = 'dhcp.dhcp_view'
     queryset = Dhcp.objects.all()
     filterset = DhcpFilter

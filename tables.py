@@ -1,6 +1,6 @@
 import django_tables2 as tables 
 from django_tables2.utils import Accessor
-from utilities.tables import BaseTable, ToggleColumn
+from utilities.tables import BaseTable, ToggleColumn, ButtonsColumn, BooleanColumn,TagColumn, ToggleColumn
 from .models import Dhcp, Ipfixo, Responsavel
 
 class DhcpTable(BaseTable):
@@ -15,7 +15,8 @@ class DhcpTable(BaseTable):
         fields = (
             'pk',
             'id_prefixes',
-            'prefixes',
+            'ipaddresses',
+            'prefix',
             'id_domain',
             'gateway',
             'option',
@@ -26,6 +27,9 @@ class DhcpTable(BaseTable):
             'defaultleasetime',
             'maxleasetime',
         )
+        default_columns = ('pk','prefixes', 'ipaddresses')
+
+
 class IpfixoTable(BaseTable):
     """ classe destinada ao model ipfixo"""
     pk = ToggleColumn()
