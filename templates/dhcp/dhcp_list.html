@@ -7,13 +7,17 @@
 {% load plugins %}
 
 {% with config=settings.PLUGINS_CONFIG.dhcp %}
-<div class="pull-right noprint">
+<div class="pull-right noprint">    
     {% add_button 'plugins:dhcp:dhcp_add' %}
     <!-- botao de componentes aqui -->
     {% if perms.dhcp.change_dhcp%}{% endif %}
     {% if request.user.is_authenticated and table_config_form %}
         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#tableconfig" title="Configure table"><i class="fa fa-cog"></i> Configure</button>
     {% endif %}
+    <div class="clearfix"></div>
+    {% if table_config_form %}
+            {% include 'inc/table_config_form.html' %}
+        {% endif %}
     <!-- fim_botao componentes -->
 </div>
 <h1>{% block title %}Lista de DHCPs{% endblock %}</h1>
@@ -26,13 +30,11 @@
         </button>
          <ul class="dropdown-menu">
              {% if perms.dhcp.add_responsavel %}
-                <li><a href="{% url 'plugins:dhcp:responsavel_add' %}">Responsavel</a></li>
-                <!-- <li><a href="{% url 'plugins:dhcp:responsavel_add' %}?responsavel={{ responsavel.pk }}&return_url={{ responsavel.get_absolute_url }}">Responsavel</a></li> -->
+                <li><a href="{% url 'plugins:dhcp:responsavel_add' %}">Add Responsavel</a></li>
+                <li><a href="{% url 'plugins:dhcp:ipfixo_add' %}?ipfixo={{ id_prefixes.pk }}&return_url={{ ipfixo.get_absolute_url }}">Add IP fixo</a></li> 
             {% endif %}
         </ul>
-        {% if table_config_form %}
-            {% include 'inc/table_config_form.html' %}
-        {% endif %}
+        
     </div>
       
 	<div class="col-md-3 noprint">

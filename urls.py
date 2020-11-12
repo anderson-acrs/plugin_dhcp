@@ -27,7 +27,9 @@ urlpatterns = [
 
 
     #Responsavel
+    path('responsavel/', views.ResponsavelObjetcView.as_view(), name='resp' ),
+    path('responsavel/<name>/', views.RespView.as_view(), name='responsavel' ),
     path('responsavel/add/', views.ResponsavelTemplateCreateView.as_view(), name='responsavel_add' )
-    
+     
 
 ] 

@@ -13,14 +13,14 @@ class DhcpFilter(NameSlugSearchFilterSet):
     class Meta:
         model = Dhcp
         fields = [
-            'prefixes',           
+            'prefix',           
             ]
-    def search(self, queryset, prefixes, value):
-        if not prefixes.strip():
+    def search(self, queryset, prefix, value):
+        if not prefix.strip():
             return queryset
 
         qs_filter = (
             #Q(id_prefixes__icontains=value)
-            Q(prefixes__icontains=value)            
+            Q(prefix__icontains=value)            
         )
         return queryset.filter(qs_filter)

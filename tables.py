@@ -6,7 +6,7 @@ from .models import Dhcp, Ipfixo, Responsavel
 class DhcpTable(BaseTable):
     """ classe destinada ao model dhcp"""
     pk = ToggleColumn()
-    prefixes = tables.LinkColumn(    
+    prefix = tables.LinkColumn(    
         viewname='plugins:dhcp:dhcp_edit',
         args=[Accessor('pk')]
     )
@@ -14,15 +14,18 @@ class DhcpTable(BaseTable):
         model = Dhcp
         fields = (
             'pk',
+            'address',
             'id_prefixes',
             'ipaddresses',
             'prefix',
             'id_domain',
+            'vlan',
             'gateway',
             'option',
             'tipo',
             'ip_inicial',
             'ip_final',
+            'local',
             'data_criacao',
             'defaultleasetime',
             'maxleasetime',
@@ -45,7 +48,9 @@ class IpfixoTable(BaseTable):
             'pk',
             'prefix',
             'mac_address',
-            'ip_host',
+            'address',
+            #'ipaddress',
+            #'ip_host',
             'host',
             
         )

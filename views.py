@@ -6,7 +6,9 @@ from .forms import DhcpForm, DhcpFilterForm, IpfixoForm, IpfixoFilterForm, Respo
 from .filter import DhcpFilter
 from .tables import DhcpTable, IpfixoTable, ResponsavelTable
 from django.views import View
-from  utilities.views import ObjectListView, ObjectEditView, ObjectDeleteView, BulkDeleteView, ComponentCreateView
+from django.views.generic.base import TemplateView
+from .utils import get_token, get_user, get_unit, get_server
+from  utilities.views import ObjectListView, ObjectEditView, ObjectDeleteView, BulkDeleteView, ComponentCreateView, ObjectView
 
 # Create your views here.
 
@@ -112,3 +114,31 @@ class ResponsavelTemplateCreateView(PermissionRequiredMixin, ComponentCreateView
     model_form = ResponsavelForm
     template_name = 'dhcp/responsavel_add.html'
     default_return_url = 'plugins:dhcp:responsavel_add'
+
+class RespView(TemplateView):
+    """
+    Esta classe mostra o que eu tenho que ver
+    """
+    template_name ="dhcp/resp.html"
+        
+    def get_context_data(self, ** kwargs):
+       context = super().get_context_data(**kwargs)
+       nome = self.kwargs['name']
+       resp = get_user(nome)
+       unit = get_unit(str(resp[0]['id-unidade']))
+       context['login'] = resp[0]['login']
+       context['nome'] = resp[0]['nome-pessoa']
+       context['mail'] = resp[0]['email']
+       context['unidade'] = unit['nome-unidade']
+       return context
+
+
+class ResponsavelObjetcView(ObjectView):
+    def get(self, request, pk):
+
+        responsavel = get_object_or_404(self.queryset, pk=pk)
+        responsaveis = Responsavel.objects.restrict(request.user, 'view').filter(responsavel=responsavel)
+        return render(request, 'dhcp/responsavel.html', {
+        'responsavel':responsavel,
+    })
+

@@ -1,6 +1,7 @@
 from django import forms
-from utilities.forms import BootstrapMixin
-from .models import Dhcp, DhcpChoices, Ipfixo, Responsavel
+from utilities.forms import BootstrapMixin, DynamicModelChoiceField
+from .models import Dhcp, DhcpChoices, Ipfixo, Responsavel 
+from ipam.models import Prefix, VLAN, IPAddress
 
 
 
@@ -10,13 +11,33 @@ BLANK_CHOICE = (("", "---------"),)
 class DhcpForm(BootstrapMixin, forms.ModelForm):
     """ classe destinada ao model dhcp"""
 
+    # ipaddresses = DynamicModelChoiceField(
+    #     queryset=IPAddress.objects.all(),
+    #     required=False,
+    #     label='IP Server',
+    #     display_field='display_name',
+    #     # query_params={
+    #     #     'ipadress':'$address',
+    #     # }
+    # )
+    vlan = DynamicModelChoiceField(
+        queryset=VLAN.objects.all(),
+        required=False,
+        label='VLAN',
+        display_field='display_name',
+        query_params={
+            'site_id': '$site',
+            'group_id': '$vlan_group',
+        }
+    )
     class Meta:
         model = Dhcp
         fields = [
-            #'prefixes', 
+            'address', 
             'prefix',
-            'netmask',
+            'vlan',
             'id_domain',
+            #'dns_name',
             'gateway',
             'option',
             'tipo',
@@ -24,7 +45,7 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
             'ip_final',
             'data_criacao',
             'ipaddresses',
-            #'device',
+            'local',
             'defaultleasetime',
             'maxleasetime',
             'id_resp',   
@@ -55,10 +76,12 @@ class IpfixoForm(BootstrapMixin, forms.ModelForm):
     class Meta:
         model = Ipfixo
         fields = [
-            'id_prefixes' ,
+            #'id_prefixes' ,
             'prefix',
             'mac_address',
-            'ip_host',
+            #'ipaddress',
+            'address',
+            #'ip_host',
             'host',
                        
         ]
@@ -73,6 +96,7 @@ class IpfixoFilterForm(BootstrapMixin, forms.ModelForm):
         fields = [
             'q',
             'host',
+            'mac_address',
                     
         ]
 class ResponsavelForm(BootstrapMixin, forms.ModelForm):
