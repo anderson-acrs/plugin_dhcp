@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required, login_required
 from .models import Dhcp, Ipfixo, Responsavel
 from .forms import DhcpForm, DhcpFilterForm, IpfixoForm, IpfixoFilterForm, ResponsavelForm
-from .filter import DhcpFilter
+from .filter import DhcpFilter, IpfixoFilter
 from .tables import DhcpTable, IpfixoTable, ResponsavelTable
 from django.views import View
 from django.views.generic.base import TemplateView
@@ -58,14 +58,18 @@ class DhcpBulkDeleteView(PermissionRequiredMixin, BulkDeleteView):
 class IpfixoView(PermissionRequiredMixin, View):     
     permission_required = 'dhcp.ipfixo_view'        
     def get(self, request, pk):
-        ipfixo = get_object_or_404(Ipfixo.objects.filter(id_prefixes=pk))
+        ipfixo = get_object_or_404(Ipfixo.objects.filter(id_ipfixo=pk))
         return render(request, 'dhcp/ipfixo.html', {
            'ipfixo': ipfixo
         })
 
 class IpfixoListView (PermissionRequiredMixin, ObjectListView):
     permission_required = 'dhcp.view_ipfixo'
-    queryset = Ipfixo.objects.all()    
+    #queryset = Ipfixo.objects.all() 
+    queryset = Ipfixo.objects.prefetch_related(
+        'mac_address', 'host'#, 'tenant', 'role', 'prefixes'
+    )   
+    filterset = IpfixoFilter
     filterset_form = IpfixoFilterForm
     table = IpfixoTable
     template_name = 'dhcp/ipfixo_list.html'
@@ -73,7 +77,7 @@ class IpfixoListView (PermissionRequiredMixin, ObjectListView):
 class IpfixoCreateView(PermissionRequiredMixin, ObjectEditView):
     permission_required = 'dhcp.add_ipfixo'
     model = Ipfixo
-    queryset = Ipfixo.objects.all()
+    queryset = Ipfixo.objects.all()   
     model_form = IpfixoForm
     template_name = 'dhcp/ipfixo_add.html'
     default_return_url = 'plugins:dhcp:ipfixo_list'
@@ -99,8 +103,9 @@ class ResponsavelView(PermissionRequiredMixin, View):
     permission_required = 'dhcp.dhcp_view'
     def get(self, request, pk):
         responsavel = get_object_or_404(Responsavel, pk=pk)
-        resonsavel_table = tables.ResponsavelTable(
-            ResponsavelTable.objects.filter(responsavel=responsavel),
+        responsavel_table = tables.ResponsavelTable(
+            #ResponsavelTable.objects.filter(responsavel=responsavel),
+            Responsavel.objects.filter(responsavel=responsavel),
             orderable = false
         )
         return render(request, 'dhcp/responsavel_add.html', {

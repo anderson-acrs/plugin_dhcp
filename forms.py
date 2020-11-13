@@ -1,5 +1,5 @@
 from django import forms
-from utilities.forms import BootstrapMixin, DynamicModelChoiceField
+from utilities.forms import BootstrapMixin, DynamicModelChoiceField, TagFilterField
 from .models import Dhcp, DhcpChoices, Ipfixo, Responsavel 
 from ipam.models import Prefix, VLAN, IPAddress
 
@@ -87,18 +87,21 @@ class IpfixoForm(BootstrapMixin, forms.ModelForm):
         ]
 class IpfixoFilterForm(BootstrapMixin, forms.ModelForm):
     """ classe destinada ao model Ipfixo"""
+    #model = Ipfixo
+    #field_order = ['q','host','mac_address']
     q = forms.CharField(
-    required=False,
-    label="Buscador",
+        required=False,
+        label="Buscador",
     )
+    #tag = TagFilterField(model) 
     class Meta:
         model = Ipfixo
         fields = [
             'q',
-            'host',
-            'mac_address',
+    #        'host',
+    #        'mac_address',
                     
-        ]
+       ]
 class ResponsavelForm(BootstrapMixin, forms.ModelForm):
     """ classe destinada ao model Responsavel"""
     class Meta:

@@ -6,6 +6,7 @@
 {% load plugins %}
 
 {% block title %}{{ responsavel }}{% endblock %}
+{%block content%}
 <div class="row">
     <div class="col-md-6">
         {% if responsavel %}
@@ -36,3 +37,4 @@
         </div> 
     </div>
 </div>
+{% endblock %}
