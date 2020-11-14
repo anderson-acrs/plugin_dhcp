@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required, login_required
+#from ipam.models import IPAddress, Prefix #Adicionado
 from .models import Dhcp, Ipfixo, Responsavel
 from .forms import DhcpForm, DhcpFilterForm, IpfixoForm, IpfixoFilterForm, ResponsavelForm
 from .filter import DhcpFilter, IpfixoFilter
@@ -67,7 +68,7 @@ class IpfixoListView (PermissionRequiredMixin, ObjectListView):
     permission_required = 'dhcp.view_ipfixo'
     #queryset = Ipfixo.objects.all() 
     queryset = Ipfixo.objects.prefetch_related(
-        'mac_address', 'host'#, 'tenant', 'role', 'prefixes'
+        'mac_address', 'host', 'prefix'  #, 'tenant', 'role', 'prefixes'
     )   
     filterset = IpfixoFilter
     filterset_form = IpfixoFilterForm

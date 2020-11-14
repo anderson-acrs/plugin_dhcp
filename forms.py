@@ -45,7 +45,7 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
             'ip_final',
             'data_criacao',
             'ipaddresses',
-            'local',
+            'name', #local
             'defaultleasetime',
             'maxleasetime',
             'id_resp',   
@@ -79,10 +79,13 @@ class IpfixoForm(BootstrapMixin, forms.ModelForm):
             #'id_prefixes' ,
             'prefix',
             'mac_address',
+            'vlan',
             #'ipaddress',
             'address',
             #'ip_host',
             'host',
+            'num_chamado',
+            'comments',
                        
         ]
 class IpfixoFilterForm(BootstrapMixin, forms.ModelForm):

@@ -1,7 +1,8 @@
 import django_tables2 as tables 
 from django_tables2.utils import Accessor
-from utilities.tables import BaseTable, ToggleColumn, ButtonsColumn, BooleanColumn,TagColumn, ToggleColumn
+from utilities.tables import BaseTable, ToggleColumn, ButtonsColumn, BooleanColumn,TagColumn #,ToggleColumn
 from .models import Dhcp, Ipfixo, Responsavel
+from ipam.models import Prefix
 
 class DhcpTable(BaseTable):
     """ classe destinada ao model dhcp"""
@@ -25,7 +26,7 @@ class DhcpTable(BaseTable):
             'tipo',
             'ip_inicial',
             'ip_final',
-            'local',
+            'name',# local
             'data_criacao',
             'defaultleasetime',
             'maxleasetime',
@@ -36,8 +37,9 @@ class DhcpTable(BaseTable):
 class IpfixoTable(BaseTable):
     """ classe destinada ao model ipfixo"""
     pk = ToggleColumn()
+    
     host = tables.LinkColumn(
-        viewname = 'plugins:dhcp:ipfixo_edit',
+        viewname = 'plugins:dhcp:ipfixo_edit',       
         args = [Accessor('pk')]
     )
 
@@ -49,6 +51,7 @@ class IpfixoTable(BaseTable):
             'prefix',
             'mac_address',
             'address',
+            'vlan',
             #'ipaddress',
             #'ip_host',
             'host',
