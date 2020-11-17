@@ -2,6 +2,7 @@ from django import forms
 from utilities.forms import BootstrapMixin, DynamicModelChoiceField, TagFilterField
 from .models import Dhcp, DhcpChoices, Ipfixo, Responsavel 
 from ipam.models import Prefix, VLAN, IPAddress
+from utilities.forms import DynamicModelChoiceField
 
 
 
@@ -58,6 +59,30 @@ class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
     required=False,
     label="Buscador",
     )
+    vid = DynamicModelChoiceField(
+        queryset=VLAN.objects.all(),
+        required=False,
+        label='VLAN',
+        null_option='None',
+        query_params={
+            #'region': '$region'
+            'site_id': '$site',
+            'group_id': '$vlan_group',
+        }
+    )  
+    address = DynamicModelChoiceField(
+        queryset=IPAddress.objects.all(),
+        required=False,
+        label='address',
+        null_option='None',
+        query_params={
+            #'region': '$region'
+            'vlan_id': '$vlan',
+            #'group_id': '$vlan_group',
+        }
+    )  
+    
+
     # tipo = forms.ChoiceField(
     #     choices=BLANK_CHOICE + DhcpChoices.CHOICES,
     #     required=False
@@ -96,6 +121,15 @@ class IpfixoFilterForm(BootstrapMixin, forms.ModelForm):
         required=False,
         label="Buscador",
     )
+    vid = DynamicModelChoiceField(
+        queryset=VLAN.objects.all(),
+        required=False,
+        label='VLAN',
+        null_option='None',
+        query_params={
+            'region': '$region'
+        }
+    )  
     #tag = TagFilterField(model) 
     class Meta:
         model = Ipfixo

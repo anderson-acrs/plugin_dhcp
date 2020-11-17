@@ -72,8 +72,10 @@ class Dhcp(models.Model):
     )#CharField(max_length=100, null=True, blank=True)
        
        
+    #def __str__(self):
+     #   return  self.name
     def __str__(self):
-        return  self.name
+        return  str (self.prefix)
     
     
     def get_absolute_url(self):
