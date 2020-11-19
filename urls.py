@@ -2,7 +2,7 @@ from django.urls import path, include
 from . import views
 
 """ comentario """
-app_name = 'dhcp'
+#app_name = 'dhcp'
 urlpatterns = [
     #DHCP
     path('', views.DhcpListView.as_view() , name='dhcp_list'),

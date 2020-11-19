@@ -1,8 +1,9 @@
 from django import forms
-from utilities.forms import BootstrapMixin, DynamicModelChoiceField, TagFilterField
+from utilities.forms import BootstrapMixin, DynamicModelChoiceField, DynamicModelMultipleChoiceField
 from .models import Dhcp, DhcpChoices, Ipfixo, Responsavel 
-from ipam.models import Prefix, VLAN, IPAddress
-from utilities.forms import DynamicModelChoiceField
+#from dhcp.models import Dhcp
+from ipam.models import *
+#from utilities.forms import DynamicModelChoiceField
 
 
 
@@ -56,8 +57,8 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
 class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
     """ classe destinada ao model dhcp"""
     q = forms.CharField(
-    required=False,
-    label="Buscador",
+        required=False,
+        label='Search',
     )
     vid = DynamicModelChoiceField(
         queryset=VLAN.objects.all(),
@@ -69,20 +70,18 @@ class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
             'site_id': '$site',
             'group_id': '$vlan_group',
         }
-    )  
-    address = DynamicModelChoiceField(
-        queryset=IPAddress.objects.all(),
+    ) 
+    prefix = DynamicModelChoiceField (
+        queryset=Prefix.objects.all(),
         required=False,
-        label='address',
-        null_option='None',
-        query_params={
-            #'region': '$region'
-            'vlan_id': '$vlan',
+        label='Prefix',
+        query_params={            
+            'id_prefixes': '$id_prefixes',
+            #'vlan_id': '$vlan',
             #'group_id': '$vlan_group',
         }
-    )  
+    )    
     
-
     # tipo = forms.ChoiceField(
     #     choices=BLANK_CHOICE + DhcpChoices.CHOICES,
     #     required=False

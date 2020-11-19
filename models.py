@@ -1,3 +1,5 @@
+import netaddr
+from ipam.fields import *
 from django.db import models
 from ipam.models import Prefix, IPAddress
 from dcim.models import Site
@@ -46,11 +48,17 @@ class Dhcp(models.Model):
         verbose_name='Prefix'
     )    
     id_domain = models.IntegerField(null=True)    
-    gateway = models.GenericIPAddressField()
+    gateway = models.GenericIPAddressField(
+        help_text= 'IPV4 or IPV6 address (without Mask)'
+    )
     option = models.CharField(max_length=2, choices=DhcpOpcaoChoices, default=DhcpOpcaoChoices.TIPO_43,)
     tipo = models.CharField(max_length=9, choices=DhcpChoices, default=DhcpChoices.TIPO_IPV4,)
-    ip_inicial = models.GenericIPAddressField()
-    ip_final = models.GenericIPAddressField()    
+    ip_inicial = models.GenericIPAddressField(
+        help_text= 'IPV4 or IPV6 address (without Mask)'
+    )
+    ip_final = models.GenericIPAddressField(
+        help_text= 'IPV4 or IPV6 address (without Mask)'
+    )    
     ipaddresses = models.ForeignKey(  #OneToOneField(
         to='ipam.IPAddress',
         on_delete=models.SET_NULL,
