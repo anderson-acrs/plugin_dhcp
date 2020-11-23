@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Dhcp, Ipfixo, Responsavel, Servico
+from .models import Dhcp, Ipfixo, Servico
 
 # Register your models here.
 
@@ -8,10 +8,6 @@ from .models import Dhcp, Ipfixo, Responsavel, Servico
 class DhcpAdmin(admin.ModelAdmin):
    list_display = ('prefix', 'address', 'id_domain', 'gateway', 'option', 'tipo', 'ip_inicial', 'ip_final', 'data_criacao', 'defaultleasetime','maxleasetime', 'name')
 
-
-@admin.register(Responsavel)
-class ResponsavelAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'contato')
 
 @admin.register(Ipfixo)
 class IpfixoAdmin(admin.ModelAdmin):

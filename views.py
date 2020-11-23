@@ -1,14 +1,14 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required, login_required
-from .models import Dhcp, Ipfixo, Responsavel
-from .forms import DhcpForm, DhcpFilterForm, IpfixoForm, IpfixoFilterForm, ResponsavelForm
+from .models import Dhcp, Ipfixo
+from .forms import DhcpForm, DhcpFilterForm, DhcpCSVForm, IpfixoForm, IpfixoFilterForm
 from .filter import DhcpFilter, IpfixoFilter
-from .tables import DhcpTable, IpfixoTable, ResponsavelTable
+from .tables import DhcpTable, IpfixoTable
 from django.views import View
 from django.views.generic.base import TemplateView
 from .utils import get_token, get_user, get_unit, get_server
-from  utilities.views import ObjectListView, ObjectEditView, ObjectDeleteView, BulkDeleteView, ComponentCreateView, ObjectView
+from  utilities.views import ObjectListView, ObjectEditView, ObjectDeleteView, BulkDeleteView, ComponentCreateView, ObjectView, BulkImportView
 
 # Create your views here.
 
@@ -54,6 +54,13 @@ class DhcpBulkDeleteView(PermissionRequiredMixin, BulkDeleteView):
     table = DhcpTable
     default_return_url = 'plugins:dhcp:dhcp_list'
 
+class DhcpBulkImportView(PermissionRequiredMixin, BulkImportView):
+    permission_required = 'dhcp.import_dhcp'
+    queryset = Dhcp.objects.all()
+    model_form = DhcpCSVForm
+    table = DhcpTable
+    template_name = 'dhcp/dhcp_import.html'
+    
 #Bloco IP Fixo
 class IpfixoView(PermissionRequiredMixin, View):     
     permission_required = 'dhcp.ipfixo_view'        
@@ -98,52 +105,7 @@ class IpfixoBulkDeleteView(PermissionRequiredMixin, BulkDeleteView):
     default_return_url = 'plugins:dhcp:ipfixo_list'
     #Final ipfixo
 
-#View Responsavel
-class ResponsavelView(PermissionRequiredMixin, View):
-    permission_required = 'dhcp.dhcp_view'
-    def get(self, request, pk):
-        responsavel = get_object_or_404(Responsavel, pk=pk)
-        responsavel_table = tables.ResponsavelTable(
-            #ResponsavelTable.objects.filter(responsavel=responsavel),
-            Responsavel.objects.filter(responsavel=responsavel),
-            orderable = false
-        )
-        return render(request, 'dhcp/responsavel_add.html', {
-            'responsavel': responsavel,
-        })
-
-
-class ResponsavelTemplateCreateView(PermissionRequiredMixin, ComponentCreateView):
-    permission_required = 'dhcp.add_responsavel'
-    model = Responsavel    
-    model_form = ResponsavelForm
-    template_name = 'dhcp/responsavel_add.html'
-    default_return_url = 'plugins:dhcp:responsavel_add'
-
-class RespView(TemplateView):
-    """
-    Esta classe mostra o que eu tenho que ver
-    """
-    template_name ="dhcp/resp.html"
-        
-    def get_context_data(self, ** kwargs):
-       context = super().get_context_data(**kwargs)
-       nome = self.kwargs['name']
-       resp = get_user(nome)
-       unit = get_unit(str(resp[0]['id-unidade']))
-       context['login'] = resp[0]['login']
-       context['nome'] = resp[0]['nome-pessoa']
-       context['mail'] = resp[0]['email']
-       context['unidade'] = unit['nome-unidade']
-       return context
-
-
-class ResponsavelObjetcView(ObjectView):
-    def get(self, request, pk):
-
-        responsavel = get_object_or_404(self.queryset, pk=pk)
-        responsaveis = Responsavel.objects.restrict(request.user, 'view').filter(responsavel=responsavel)
-        return render(request, 'dhcp/responsavel.html', {
-        'responsavel':responsavel,
-    })
-
+#class IpfixoBulkImportView(BulkImportView):
+#    queryset = Ipfixo.objects.all()
+#    model_form = IpfixoCSVForm #forms.IpfixoCSVForm
+#    table = IpfixoTable #tables.IpfixoTable

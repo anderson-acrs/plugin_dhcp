@@ -29,8 +29,7 @@
          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Components <span class="caret"></span>
         </button>
          <ul class="dropdown-menu">
-             {% if perms.dhcp.add_responsavel %}
-                <li><a href="{% url 'plugins:dhcp:responsavel_add' %}">Add Responsavel</a></li>
+             {% if perms.dhcp.add_ipfixo %}                
                 <li><a href="{% url 'plugins:dhcp:ipfixo_add' %}?ipfixo={{ id_prefixes.pk }}&return_url={{ ipfixo.get_absolute_url }}">Add IP fixo</a></li> 
             {% endif %}
         </ul>

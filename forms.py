@@ -1,7 +1,7 @@
 from django import forms
-from utilities.forms import BootstrapMixin, DynamicModelChoiceField, DynamicModelMultipleChoiceField, APISelect
-from .models import Dhcp, DhcpChoices, Ipfixo, Responsavel 
-#from dhcp.models import Dhcp
+from utilities.forms import BootstrapMixin, DynamicModelChoiceField, CSVChoiceField
+from .models import Dhcp, DhcpChoices, Ipfixo
+from extras.forms import CustomFieldModelCSVForm
 from ipam.models import *
 #from utilities.forms import DynamicModelChoiceField
 
@@ -26,23 +26,22 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
     class Meta:
         model = Dhcp
         fields = [
-            'address', 
             'prefix',
+            'address', 
             'vlan',
             'id_domain',
-            #'dns_name',
             'gateway',
+            'ipaddresses',
+            #'dns_name',
+            'ip_inicial',
+            'ip_final',            
             'option',
             'tipo',
-            'ip_inicial',
-            'ip_final',
-            'data_criacao',
-            'ipaddresses',
+            'data_criacao',            
             'name', #local
             'defaultleasetime',
             'maxleasetime',
-            'id_resp',   
-
+            #'id_resp',   
         ]
 
 class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
@@ -60,23 +59,43 @@ class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
             'vlan',           
         ]
 
+class DhcpCSVForm(CustomFieldModelCSVForm):
+    model = Dhcp
+    fields = Dhcp.csv_headers
+    class Meta:
+        model = Dhcp
+        fields = [
+            'prefix',
+            'address', 
+            'vlan',
+            #'id_domain',
+            'gateway',
+            'ipaddresses',
+            #'dns_name',
+            'ip_inicial',
+            'ip_final',            
+            #'option',
+            #'tipo',
+            #'data_criacao',            
+            #'name', #local
+            #'defaultleasetime',
+            #'maxleasetime',
+            #'id_resp',   
+        ]
+
 
 class IpfixoForm(BootstrapMixin, forms.ModelForm):
     """ classe destinada ao model Ipfixo"""
     class Meta:
         model = Ipfixo
-        fields = [
-            #'id_prefixes' ,
+        fields = [         
             'prefix',
-            'mac_address',
             'vlan',
-            #'ipaddress',
+            'mac_address',
             'address',
-            #'ip_host',
-            'host',
+            'host',                        
             'num_chamado',
-            'comments',
-                       
+            'comments',                       
         ]
 class IpfixoFilterForm(BootstrapMixin, forms.ModelForm):
     """ classe destinada ao model Ipfixo"""
@@ -94,12 +113,3 @@ class IpfixoFilterForm(BootstrapMixin, forms.ModelForm):
             'prefix',
             'vlan',              
        ]
-class ResponsavelForm(BootstrapMixin, forms.ModelForm):
-    """ classe destinada ao model Responsavel"""
-    class Meta:
-        model = Responsavel
-        fields = [
-            'id_resp',
-            'nome',            
-            'contato',
-        ]

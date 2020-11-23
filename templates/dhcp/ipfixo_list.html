@@ -19,9 +19,8 @@
          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Components <span class="caret"></span>
         </button>
          <ul class="dropdown-menu">
-             {% if perms.dhcp.add_responsavel %}
-                <li><a href="{% url 'plugins:dhcp:responsavel_add' %}">Responsavel</a></li>
-                <!-- <li><a href="{% url 'plugins:dhcp:responsavel_add' %}?responsavel={{ responsavel.pk }}&return_url={{ responsavel.get_absolute_url }}">Responsavel</a></li> -->
+             {% if perms.dhcp.add_ipfixo %}
+                
             {% endif %}
         </ul>
     </div>

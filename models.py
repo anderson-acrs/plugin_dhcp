@@ -85,7 +85,6 @@ class Dhcp(models.Model):
         null=True,               
         verbose_name='DHCP Server'
     )
-    id_resp = models.ForeignKey('Responsavel', on_delete=models.PROTECT)
     defaultleasetime = models.IntegerField(default=None)
     maxleasetime = models.IntegerField(default=None)    
     data_criacao = models.DateTimeField(default=timezone.now())    
@@ -95,17 +94,27 @@ class Dhcp(models.Model):
         related_name='+',
         null=True,
         verbose_name='Site',
-    )#CharField(max_length=100, null=True, blank=True)
+    )
+
+    #objects = Dhcp.QuerySet.as_manager()
+    csv_headers = [
+        'prefix', 'address', 'gateway', 'vlan', 'vrf', 'ip_inicial', 'ip_final', 'ipaddress', 'nome']
        
        
-    #def __str__(self):
-     #   return  self.name
     def __str__(self):
         return  str (self.prefix) #or super().__str__()
     
     
     def get_absolute_url(self):
         return reverse('plugins:dhcp:dhcp_list')
+
+    def to_csv(self):
+        return(
+        self.prefix,
+        self.address,
+        self.gateway,
+        self.vlan,
+        )
         
 
 class Ipfixo(models.Model):
@@ -155,32 +164,22 @@ class Ipfixo(models.Model):
     comments = models.TextField(
         blank=True
     )
-    # comments = CommentField()
-    # local_context_data = JSONField(
-    #     required=False,
-    #     label=''
-    # )
-   # observation = models.CharField(max_length=255)
+
+    csv_headers = ['prefix', 'vlan', 'mac_address', 'address', 'host', 'num_chamado']
+    
     def __str__(self):
         return  self.host
-    #def __str__(self):
-    #   return str(self.prefix)
 
     def get_absolute_url(self):
         return reverse('plugins:dhcp:ipfixo_list')
-class Responsavel(models.Model):
-    id_resp = models.AutoField(primary_key=True)
-    nome = models.CharField(max_length=20)
-    contato = models.CharField(max_length=20)
-    name = models.OneToOneField(
-        to='tenancy.Tenant',
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True,
-        null=True,
-        verbose_name='Tenant',
-        max_length=30,
-        unique=True
-    )
-    def __str__(self):
-        return  self.nome
+
+    def to_csv(self):
+        return(
+            self.prefix,
+            self.vlan,
+            self.mac_address,
+            self.address,
+            self.host,
+            self.num_chamado
+        )
+
