@@ -22,14 +22,14 @@ class Servico(models.Model):
 
 class Dhcp(models.Model):
     id_prefixes = models.AutoField(primary_key=True)
-    vlan = models.ForeignKey( #ForeignKey( # OneToOneField(
-        to='ipam.VLAN',
+    prefix = models.OneToOneField(
+        to='ipam.Prefix',
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True,
         null=True,
-        verbose_name='VLAN'
-    )
+        verbose_name='Prefix'
+    )  
     address = models.ForeignKey(
         to='ipam.IPAddress',
         on_delete=models.SET_NULL,
@@ -39,18 +39,36 @@ class Dhcp(models.Model):
         verbose_name='IP de Gerencia',
         help_text='IPv4 or IPv6 address (with mask)',
     )
-    prefix = models.OneToOneField(
-        to='ipam.Prefix',
+    gateway = models.GenericIPAddressField(
+        help_text= 'IPV4 or IPV6 address (without Mask)'
+    )
+    vlan = models.ForeignKey( #ForeignKey( # OneToOneField(
+        to='ipam.VLAN',
         on_delete=models.SET_NULL,
         related_name='+',
         blank=True,
         null=True,
-        verbose_name='Prefix'
-    )    
-    id_domain = models.IntegerField(null=True)    
-    gateway = models.GenericIPAddressField(
-        help_text= 'IPV4 or IPV6 address (without Mask)'
+        verbose_name='VLAN'
     )
+    
+    
+    vrf = models.ForeignKey(
+        to='ipam.VRF',
+        on_delete=models.PROTECT,
+        related_name='+',
+        blank=True,
+        null=True,
+        verbose_name='VRF'
+    )  
+    id_domain = models.IntegerField(null=True) 
+    # domain = models.CharField(max_length=30)
+    # dns_1 = models.GenericIPAddressField(max_length=30)
+    # dns_2 = models.GenericIpaddressField(max_length=30)
+    # dns_3 = models.GenericIPAddressField(
+    #     max_length=30,
+    #     help_text= 'Optional DNS'
+    # )   
+    
     option = models.CharField(max_length=2, choices=DhcpOpcaoChoices, default=DhcpOpcaoChoices.TIPO_43,)
     tipo = models.CharField(max_length=9, choices=DhcpChoices, default=DhcpChoices.TIPO_IPV4,)
     ip_inicial = models.GenericIPAddressField(
@@ -83,7 +101,7 @@ class Dhcp(models.Model):
     #def __str__(self):
      #   return  self.name
     def __str__(self):
-        return  str (self.prefix)
+        return  str (self.prefix) #or super().__str__()
     
     
     def get_absolute_url(self):
@@ -100,7 +118,15 @@ class Ipfixo(models.Model):
         null=True,
         verbose_name='Prefix'
     )
-    vlan = models.ForeignKey( #ForeignKey( # OneToOneField(
+    vrf = models.ForeignKey(
+        to='ipam.VRF',
+        on_delete=models.PROTECT,
+        related_name='+',
+        blank=True,
+        null=True,
+        verbose_name='VRF'
+    )  
+    vlan = models.ForeignKey( 
         to='ipam.VLAN',
         on_delete=models.SET_NULL,
         related_name='+',

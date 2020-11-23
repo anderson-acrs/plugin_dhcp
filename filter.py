@@ -13,134 +13,82 @@ class DhcpFilter(BaseFilterSet, NameSlugSearchFilterSet):
         method="search",
         label="Search",    
     )
-    vid = django_filters.CharFilter(
+    vlan = django_filters.CharFilter(
         method='filter_vlan',
         label='Vlan',
     )
-    # address = MultiValueCharFilter(
-    #     method='filter_address',
-    #     label='Address',
-    # ) 
     prefix = django_filters.CharFilter(
-        method='filter_prefix',
-        label='Prefix',
+         method='filter_prefix',
+         label='Prefix',
     ) 
-    #Modifiquei aqui 01 modelo ipaddressfilterset, linha 287 adicionado linha 14 ate linha 52
-    # address = MultiValueCharFilter(
-    #     method='filter_address',
-    #     label='Address',
-    # )
-    # prefix = django_filters.CharFilter(
-    #     method='filter_prefix',
-    #     label='Prefix',
-    # )
-    #tag = TagFilter()  ##
+    
     class Meta:
         model = Dhcp
         fields = [
-            'id_prefixes',
-            'prefix', 
-            'address',
-            'tipo'
+            'q',
+            'prefix',
+            'vlan',
+                        
             ]
     def search(self, queryset, name, value):# value
         if not value.strip():
             return queryset
-        qs_filter = ( Q(id_prefixes_icontains=value)   
-                    | Q(option__icontains=value)   
+        qs_filter = ( Q(id_prefixes__icontains=value) |                       
+                      Q(option__icontains=value)   
                     | Q(tipo__icontains=value) 
-                    #  Q(address__istartswith=value)    #istartswith                           
+                    #| Q(address__icontains=value)    #istartswith                           
         )
         return queryset.filter(qs_filter)
-        #try:
-        #    prefix = str(netaddr.IPNetwork(value.strip()).cidr)
-        #    qs_filter |= Q(prefix__net_contains_or_equals=prefix)
-        #except (AddrFormatError, ValueError):
-        #    pass
-        #return queryset.filter(qs_filter)
-
-
-        #qs_filter = Q(description__icontains=value)
-        #Teste
-        #try:
-        #    return queryset.filter(id_prefixes=str(netaddr.IPNetwork(value.strip()))
-        #    prefix = str(netaddr.IPNetwork(value.strip()).cidr)
-        #    qs_filter |= Q(prefix__net_in=prefix) # prefix__net_icontains
-        #except (AddrFormatError, ValueError):
-        #    pass
-        #fimteste
-        #return queryset.filter(qs_filter)
-        #return queryset.filter(qs_filter)
-
-
+        
     def filter_vlan(self, queryset, name, value):
             try:
-                return queryset.filter(vlan=int(value.strip()))
+                return queryset.filter(vlan=int(value))                
             except ValidationError:
                 return queryset.none()
         
-    def filter_prefix(self, queryset, name, value):
-        if not value.strip():
-            return queryset            
-        qs_filter = Q(prefix__icontains=value) #prefix__icontains
+    def filter_prefix(self, queryset, name, value):                   
+        try:                
+            query = str(netaddr.IPNetwork(value).cidr)
+            return queryset.filter(prefix=int(value)) 
+        except ValidationError:
+            return queryset.none()
+      
+    def search_contains(self, queryset, name, value):
+        value = value.strip()
+        if not value:
+            return queryset
         try:
-            prefix = str(netaddr.IPNetwork(value.strip()).cidr)
-            qs_filter |= Q(prefix__net_contains_or_equals=prefix)
-        except (AddrFormatError, ValueError):
-            pass
-        return queryset.filter(qs_filter)
-
-        # if not value.strip():
-        #     return queryset
-        # try:
-        #     query = str(netaddr.IPNetwork(value).cidr)
-        #     return queryset.filter(prefix=query)
-        # except (AddrFormatError, ValueError):
-        #     return queryset.none()
-    
-    # def filter_address(self, queryset, name, value):
-    #     try:
-    #         return queryset.filter(address__net_in=value)
-    #     except ValidationError:
-    #         return queryset.none()
-            
-    #def search_contains(self, queryset, name, value):
-    #    value = value.strip()
-    #    if not value:
-    #        return queryset
-    #    try:
             #Searching by prefix
-    #        if '/' in value:
-    #            return queryset.filter(prefix__net_contains_or_equals=str(netaddr.IPNetwork(value).cidr))
+            if '/' in value:
+                return queryset.filter(prefix__net_contains_or_equals=str(netaddr.IPNetwork(value).cidr))
             #Searching by IP address
-    #        else:
-    #           return queryset.filter(prefix__net_contains=str(netaddr.IPAddress(value)))
-    #    except (AddrFormatError, ValueError):
-    #       return queryset.none()
+            else:
+                return queryset.filter(prefix__net_contains=str(netaddr.IPAddress(value)))
+        except (AddrFormatError, ValueError):
+                return queryset.none()
 
 
 #IPFixoFilter
 class IpfixoFilter(BaseFilterSet, NameSlugSearchFilterSet):
     q = django_filters.CharFilter(
         method="search",
-        label="Search",
+        label="Search",    
     )
-    
-    prefix = django_filters.CharFilter(
-        method='filter_prefix',
-        label='Prefix',
-    ) 
-    vid = django_filters.CharFilter(
+    vlan = django_filters.CharFilter(
         method='filter_vlan',
         label='Vlan',
     )
+    prefix = django_filters.CharFilter(
+         method='filter_prefix',
+         label='Prefix',
+    ) 
      
     class Meta:
         model = Ipfixo       
         fields = [
-            'host',
-            'mac_address',          
-            'id_ipfixo',
+            'q',
+            'prefix',          
+            'vlan',
             ]
     def search(self, queryset, name, value): #acrescentei o name e tirei o host
         if not value.strip():
@@ -155,15 +103,16 @@ class IpfixoFilter(BaseFilterSet, NameSlugSearchFilterSet):
         except ValueError:
             pass      
         return queryset.filter(qs_filter)
-        #acrescentei da linha 57-61
-    # def filter_address(self, queryset, name, value):
-    #     try:
-    #         return queryset.filter(address__net_in=value)
-    #     except ValidationError:
-    #         return queryset.none()
+        
 
     def filter_vlan(self, queryset, name, value):
             try:
-                return queryset.filter(vlan=int(value.strip()))
+                return queryset.filter(vlan=int(value))
             except ValidationError:
                 return queryset.none()
+    def filter_prefix(self, queryset, name, value):                   
+        try:                
+            query = str(netaddr.IPNetwork(value).cidr)
+            return queryset.filter(prefix=int(value)) 
+        except ValidationError:
+            return queryset.none()

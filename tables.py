@@ -7,10 +7,11 @@ from ipam.models import Prefix
 class DhcpTable(BaseTable):
     """ classe destinada ao model dhcp"""
     pk = ToggleColumn()
-    prefix = tables.LinkColumn(    
+    vrf = tables.LinkColumn(  
+        verbose_name='prefix/',  
         viewname='plugins:dhcp:dhcp_edit',
         args=[Accessor('pk')]
-    )
+     )
     class Meta(BaseTable.Meta):
         model = Dhcp
         fields = (

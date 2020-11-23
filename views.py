@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required, login_required
-#from ipam.models import IPAddress, Prefix #Adicionado
 from .models import Dhcp, Ipfixo, Responsavel
 from .forms import DhcpForm, DhcpFilterForm, IpfixoForm, IpfixoFilterForm, ResponsavelForm
 from .filter import DhcpFilter, IpfixoFilter

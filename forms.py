@@ -1,5 +1,5 @@
 from django import forms
-from utilities.forms import BootstrapMixin, DynamicModelChoiceField, DynamicModelMultipleChoiceField
+from utilities.forms import BootstrapMixin, DynamicModelChoiceField, DynamicModelMultipleChoiceField, APISelect
 from .models import Dhcp, DhcpChoices, Ipfixo, Responsavel 
 #from dhcp.models import Dhcp
 from ipam.models import *
@@ -12,16 +12,7 @@ BLANK_CHOICE = (("", "---------"),)
 
 class DhcpForm(BootstrapMixin, forms.ModelForm):
     """ classe destinada ao model dhcp"""
-
-    # ipaddresses = DynamicModelChoiceField(
-    #     queryset=IPAddress.objects.all(),
-    #     required=False,
-    #     label='IP Server',
-    #     display_field='display_name',
-    #     # query_params={
-    #     #     'ipadress':'$address',
-    #     # }
-    # )
+   
     vlan = DynamicModelChoiceField(
         queryset=VLAN.objects.all(),
         required=False,
@@ -60,38 +51,13 @@ class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
         required=False,
         label='Search',
     )
-    vid = DynamicModelChoiceField(
-        queryset=VLAN.objects.all(),
-        required=False,
-        label='VLAN',
-        null_option='None',
-        query_params={
-            #'region': '$region'
-            'site_id': '$site',
-            'group_id': '$vlan_group',
-        }
-    ) 
-    prefix = DynamicModelChoiceField (
-        queryset=Prefix.objects.all(),
-        required=False,
-        label='Prefix',
-        query_params={            
-            'id_prefixes': '$id_prefixes',
-            #'vlan_id': '$vlan',
-            #'group_id': '$vlan_group',
-        }
-    )    
     
-    # tipo = forms.ChoiceField(
-    #     choices=BLANK_CHOICE + DhcpChoices.CHOICES,
-    #     required=False
-    # )
     class Meta:
         model = Dhcp
         fields = [
             'q',
-            # 'prefixes',
-            # 'gateway',           
+            'prefix',
+            'vlan',           
         ]
 
 
@@ -120,23 +86,13 @@ class IpfixoFilterForm(BootstrapMixin, forms.ModelForm):
         required=False,
         label="Buscador",
     )
-    vid = DynamicModelChoiceField(
-        queryset=VLAN.objects.all(),
-        required=False,
-        label='VLAN',
-        null_option='None',
-        query_params={
-            'region': '$region'
-        }
-    )  
-    #tag = TagFilterField(model) 
+    
     class Meta:
         model = Ipfixo
         fields = [
             'q',
-    #        'host',
-    #        'mac_address',
-                    
+            'prefix',
+            'vlan',              
        ]
 class ResponsavelForm(BootstrapMixin, forms.ModelForm):
     """ classe destinada ao model Responsavel"""
