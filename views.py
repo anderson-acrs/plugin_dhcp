@@ -89,8 +89,8 @@ class IpfixoCreateView(PermissionRequiredMixin, ObjectEditView):
     template_name = 'dhcp/ipfixo_add.html'
     default_return_url = 'plugins:dhcp:ipfixo_list'
 
-class IpfixoEditView(DhcpCreateView):
-    permission_required = 'dhcp.change_ipfixo'
+class IpfixoEditView(IpfixoCreateView):
+    permission_required = 'ipfixo.change_ipfixo'
     
     
 class IpfixoDeleteView(PermissionRequiredMixin, ObjectDeleteView):

@@ -96,6 +96,12 @@ class Dhcp(models.Model):
         verbose_name='Site',
     )
 
+    is_sinfo = models.BooleanField(
+        verbose_name='O DHCP é de responsabilidade da SINFO?',
+        default=False,
+        help_text='Marque essa opcao se o DHCP for gerenciado pela SINFO'
+    )
+
     #objects = Dhcp.QuerySet.as_manager()
     csv_headers = [
         'prefix', 'address', 'gateway', 'vlan', 'vrf', 'ip_inicial', 'ip_final', 'ipaddress', 'nome']
@@ -173,6 +179,18 @@ class Ipfixo(models.Model):
     def get_absolute_url(self):
         return reverse('plugins:dhcp:ipfixo_list')
 
+
+    #def clean(self):
+    #    if self.mac_address:
+    #        duplicate_mac_address = self.get_duplicates()
+    #        duplicate_prefixes = self.get_duplicates()
+
+    #        if duplicate_mac_address and duplicate_prefixes:
+    #            raise ValidationsError({
+    #        'mac_address': "Ja existe neste Prefixo",
+    #        duplicate_mac_address.first(),
+    #        })
+
     def to_csv(self):
         return(
             self.prefix,
@@ -182,4 +200,6 @@ class Ipfixo(models.Model):
             self.host,
             self.num_chamado
         )
+
+    
 

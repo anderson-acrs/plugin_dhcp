@@ -28,20 +28,21 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
         fields = [
             'prefix',
             'address', 
-            'vlan',
-            'id_domain',
+            'vlan',            
             'gateway',
             'ipaddresses',
             #'dns_name',
             'ip_inicial',
-            'ip_final',            
-            'option',
+            'ip_final',  
             'tipo',
+            'option',
+            'id_domain',             
             'data_criacao',            
             'name', #local
+            'is_sinfo',
             'defaultleasetime',
             'maxleasetime',
-            #'id_resp',   
+               
         ]
 
 class DhcpFilterForm(BootstrapMixin, forms.ModelForm):

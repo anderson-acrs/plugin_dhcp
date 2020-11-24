@@ -7,8 +7,8 @@ from ipam.models import Prefix
 class DhcpTable(BaseTable):
     """ classe destinada ao model dhcp"""
     pk = ToggleColumn()
-    vrf = tables.LinkColumn(  
-        verbose_name='prefix',  
+    prefix = tables.LinkColumn(  
+        verbose_name='Prefix',  
         viewname='plugins:dhcp:dhcp_edit',
         args=[Accessor('pk')]
      )
@@ -37,8 +37,7 @@ class DhcpTable(BaseTable):
 
 class IpfixoTable(BaseTable):
     """ classe destinada ao model ipfixo"""
-    pk = ToggleColumn()
-    
+    pk = ToggleColumn()    
     host = tables.LinkColumn(
         viewname = 'plugins:dhcp:ipfixo_edit',       
         args = [Accessor('pk')]
@@ -49,12 +48,13 @@ class IpfixoTable(BaseTable):
         model = Ipfixo
         fields = (
             'pk',
+            'host',
             'prefix',
             'mac_address',
             'address',
             'vlan',
             #'ipaddress',
             #'ip_host',
-            'host',
+            
             
         )
