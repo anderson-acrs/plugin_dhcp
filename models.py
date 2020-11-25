@@ -1,11 +1,13 @@
 import netaddr
 from ipam.fields import *
 from django.db import models
+from django.db.models import Q
 from ipam.models import Prefix, IPAddress
 from dcim.models import Site
 from django.urls import reverse
 from .choices import DhcpChoices, DhcpOpcaoChoices
 from django.utils import timezone
+from sdns.models import Domain
 #from .validators import DNSValidator
 
 
@@ -60,8 +62,15 @@ class Dhcp(models.Model):
         null=True,
         verbose_name='VRF'
     )  
-    id_domain = models.IntegerField(null=True) 
-    # domain = models.CharField(max_length=30)
+    id_domain = models.ForeignKey(
+        to='sdns.Domain',
+        on_delete=models.SET_NULL,
+        related_name='+',
+        blank=True,
+        null=True,               
+        verbose_name='Domain',
+        help_text='Identificador de dominio',
+    )
     # dns_1 = models.GenericIPAddressField(max_length=30)
     # dns_2 = models.GenericIpaddressField(max_length=30)
     # dns_3 = models.GenericIPAddressField(
@@ -121,8 +130,13 @@ class Dhcp(models.Model):
         self.gateway,
         self.vlan,
         )
-        
 
+    #class Meta:
+    #    constraints = [ models.CheckConstraint(check=~Q('ip_final' >= 'ip_inicial'), name='ip_inicial_menor')]
+        
+    #class Meta:
+     #   constraints = [ models.CheckConstraint(fields=['ip_inicial', 'ip_final'], check=Q('ip_inicial' < 'ip_final'), name='ip_inicial_menor')]
+        
 class Ipfixo(models.Model):
     id_ipfixo = models.AutoField(primary_key=True)     
     prefix = models.ForeignKey(  #OneToOneField(
@@ -150,7 +164,7 @@ class Ipfixo(models.Model):
         verbose_name='VLAN'
     )
 
-    mac_address = models.CharField(unique=True,max_length=41)    
+    mac_address = models.CharField(max_length=41)    
     host = models.CharField(max_length=20)
     address = models.OneToOneField(
         to='ipam.IPAddress',
@@ -200,6 +214,10 @@ class Ipfixo(models.Model):
             self.host,
             self.num_chamado
         )
+
+
+    class Meta:
+        constraints = [ models.UniqueConstraint(fields=['prefix', 'mac_address'], name='unique_Mac_address')]
 
     
 

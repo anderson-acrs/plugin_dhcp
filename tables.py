@@ -31,6 +31,7 @@ class DhcpTable(BaseTable):
             'data_criacao',
             'defaultleasetime',
             'maxleasetime',
+            
         )
         default_columns = ('pk','prefixes', 'ipaddresses')
 
