@@ -24,7 +24,7 @@ urlpatterns = [
     path('ipfixo/delete/', views.IpfixoBulkDeleteView.as_view(), name='ipfixo_bulk_delete'),
     path('ipfixo/<int:pk>/delete/', views.IpfixoDeleteView.as_view(), name='ipfixo_delete'),
     path('ipfixo/<int:pk>/edit/', views.IpfixoEditView.as_view(), name='ipfixo_edit'),
-    #path('ipfixo/import/', views.IpfixoBulkImportView.as_view(), name='ipfixo_import'),
+    path('ipfixo/import/', views.IpfixoBulkImportView.as_view(), name='ipfixo_import'),
 
 
     #Responsavel

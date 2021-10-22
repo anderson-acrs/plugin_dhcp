@@ -1,9 +1,11 @@
 from django import forms
-from utilities.forms import BootstrapMixin, DynamicModelChoiceField, CSVChoiceField
-from .models import Dhcp, DhcpChoices, Ipfixo
+from utilities.forms import BootstrapMixin, DynamicModelChoiceField, CSVChoiceField, CSVModelForm, CSVModelChoiceField
+from .models import Dhcp, Ipfixo
+from dhcp.choices import DhcpOpcaoChoices, DhcpChoices, DhcpDnsChoices
 from extras.forms import CustomFieldModelCSVForm
 from ipam.models import *
-#from utilities.forms import DynamicModelChoiceField
+from dcim.models import Site
+
 
 
 
@@ -15,7 +17,7 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
    
     vlan = DynamicModelChoiceField(
         queryset=VLAN.objects.all(),
-        required=False,
+        required=True,
         label='VLAN',
         display_field='display_name',
         query_params={
@@ -30,15 +32,16 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
             'address', 
             'vlan',            
             'gateway',
-            'ipaddresses',
-            #'dns_name',
+            'ipaddresses',            
             'ip_inicial',
             'ip_final',  
             'tipo',
             'option',
-            'id_domain',             
+            'id_domain', 
+            'dns_1',
+            'dns_2',            
             'data_criacao',            
-            'name', #local
+            'name',
             'is_sinfo',
             'defaultleasetime',
             'maxleasetime',
@@ -60,28 +63,76 @@ class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
             'vlan',           
         ]
 
-class DhcpCSVForm(CustomFieldModelCSVForm):
-    model = Dhcp
-    fields = Dhcp.csv_headers
+class DhcpCSVForm(CSVModelForm): #CustomFieldModelCSVForm): 121  43
+    vlan = CSVModelChoiceField(
+        queryset=VLAN.objects.all(),
+        required=True,
+        to_field_name='name',
+        help_text='Required if not assigned to a Prefix',
+    )
+    
+    address = CSVModelChoiceField(
+        queryset=IPAddress.objects.all(),
+        required=False,
+        to_field_name='address',
+        help_text='Ip de gerencia',
+    )
+    
+    prefix = CSVModelChoiceField(
+        queryset=Prefix.objects.all(),
+        to_field_name='prefix',
+        required=True,
+        help_text='Prefix',
+        error_messages={"invalid_choice": "Site not found",},
+    )
+
+    option = CSVChoiceField(
+        choices=DhcpOpcaoChoices,
+        required=False,
+        help_text='Opcao DHCP',
+        ) #teste 164 #Anderson
+
+    tipo = CSVChoiceField(
+        choices=DhcpChoices,
+        required=False,
+        help_text='Tipo',
+        )
+    
+    ipaddresses = CSVModelChoiceField(
+        queryset=IPAddress.objects.all(),
+        required=True,
+        to_field_name='address',
+        help_text='Dhcp Server',
+    )
+    site = CSVModelChoiceField(
+        queryset=Site.objects.all(),
+        required=False,
+        to_field_name='name',
+        help_text='Required if not assigned to a device',
+    )   
+    defaultleasetime = CSVModelChoiceField(
+        queryset=Dhcp.objects.all(),
+        required=False,
+        help_text='default lease = 86400',
+    )
     class Meta:
+        #fields = Dhcp.csv_headers
         model = Dhcp
         fields = [
-            'prefix',
-            'address', 
-            'vlan',
-            #'id_domain',
+            'vlan', 
+            'address',
+            'prefix', 
+            'option', 
+            'tipo', 
+            'ipaddresses', 
+            'site',
+            'id_domain',
             'gateway',
-            'ipaddresses',
-            #'dns_name',
             'ip_inicial',
-            'ip_final',            
-            #'option',
-            #'tipo',
-            #'data_criacao',            
-            #'name', #local
-            #'defaultleasetime',
-            #'maxleasetime',
-            #'id_resp',   
+            'ip_final',             
+            'defaultleasetime',
+            'maxleasetime',
+            'data_criacao',
         ]
 
 
@@ -114,3 +165,55 @@ class IpfixoFilterForm(BootstrapMixin, forms.ModelForm):
             'prefix',
             'vlan',              
        ]
+class IpfixoCSVForm(CSVModelForm): 
+    vlan = CSVModelChoiceField(
+        queryset=VLAN.objects.all(),
+        required=True,
+        to_field_name='name',
+        help_text='Required if not assigned to a Prefix',
+    )
+    
+    address = CSVModelChoiceField(
+        queryset=IPAddress.objects.all(),
+        required=True,
+        to_field_name='address',
+        help_text='Ip do Host',
+    )
+    
+    prefix = CSVModelChoiceField(
+        queryset=Prefix.objects.all(),
+        to_field_name='prefix',
+        required=True,
+        help_text='Prefix',
+        error_messages={"invalid_choice": "Site not found",},
+    )
+    # mac_address = CSVModelChoiceField(
+    #     queryset=Ipfixo.objects.all(),
+    #     to_field_name='mac_address',
+    #     required=True,
+    #     help_text='Mac Address',        
+    # )
+    # host = CSVModelChoiceField(
+    #     queryset=Ipfixo.objects.all(),
+    #     to_field_name='host',
+    #     required=True,
+    #     help_text='Host',        
+    # )
+    # num_chamado = CSVModelChoiceField(
+    #     queryset=Ipfixo.objects.all(),
+    #     to_field_name='num_chamado',
+    #     required=False,
+    #     help_text='Numero do Chamado',        
+    # )
+    class Meta:
+        #fields = Ipfixo.csv_headers
+        model = Ipfixo
+        fields = [
+            'prefix',
+            'vlan', 
+            'address',
+            'mac_address',
+            'host',
+            'num_chamado',
+        ]
+             

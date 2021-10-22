@@ -25,3 +25,17 @@ class DhcpOpcaoChoices(ChoiceSet):
         (TIPO_68,'68'),
 
     )
+class DhcpDnsChoices(ChoiceSet):
+    """ Lista de opcoes de texto para o DNS """
+    TIPO_DNS1 = '10.3.156.40'
+    TIPO_DNS2 = '10.3.156.41'
+    TIPO_DNS3 = '45.55.153.57'
+    TIPO_DNS4 = '8.8.8.8'
+
+    CHOICES = (
+        (TIPO_DNS1,'10.3.156.40'),
+        (TIPO_DNS2,'10.3.156.41'),
+        (TIPO_DNS3,'45.55.153.57'),
+        (TIPO_DNS4,'8.8.8.8.8'),
+
+    )

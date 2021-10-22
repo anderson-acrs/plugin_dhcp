@@ -14,21 +14,24 @@ menu_items = (
                 color=ButtonColorChoices.GREEN,
                 permissions=['dhcp.add_dhcp']
             ),
+            PluginMenuButton(
+                link='plugins:dhcp:dhcp_import',
+                title='Import a New .CSV date',
+                icon_class='fa fa-download',
+                color=ButtonColorChoices.BLUE,
+                permissions=['dhcp.import_dhcp']
+            ),
         )
     ),
-    PluginMenuItem(
-        link='plugins:dhcp:dhcp_list',
-        link_text='Edita um dhcp',
-        permissions=['dhcp.change_dhcp'],
-    ),
+
     PluginMenuItem(
         link='plugins:dhcp:ipfixo_list',
-        link_text='Ipfixeds Listing',
+        link_text='Fixed Address Listing',
         permissions=['dhcpd.ipfixo_view'],
         buttons=(
             PluginMenuButton(
                 link='plugins:dhcp:ipfixo_add',
-                title='Add a new Ip Fixo',
+                title='Add a new Address',
                 icon_class='fa fa-plus',
                 color=ButtonColorChoices.GREEN,
                 permissions=['dhcp.add_ipfixo']

@@ -5,13 +5,13 @@ from django.db.models import Q
 from ipam.models import Prefix, IPAddress
 from dcim.models import Site
 from django.urls import reverse
-from .choices import DhcpChoices, DhcpOpcaoChoices
+from .choices import DhcpChoices, DhcpOpcaoChoices, DhcpDnsChoices
 from django.utils import timezone
 from sdns.models import Domain
-#from .validators import DNSValidator
 
 
-# Create your models here.
+
+# Create your models here. #anderson
 
 class Servico(models.Model):
     id_servico = models.AutoField(primary_key=True)
@@ -43,8 +43,9 @@ class Dhcp(models.Model):
     )
     gateway = models.GenericIPAddressField(
         help_text= 'IPV4 or IPV6 address (without Mask)'
+
     )
-    vlan = models.ForeignKey( #ForeignKey( # OneToOneField(
+    vlan = models.ForeignKey( 
         to='ipam.VLAN',
         on_delete=models.SET_NULL,
         related_name='+',
@@ -71,13 +72,20 @@ class Dhcp(models.Model):
         verbose_name='Domain',
         help_text='Identificador de dominio',
     )
-    # dns_1 = models.GenericIPAddressField(max_length=30)
-    # dns_2 = models.GenericIpaddressField(max_length=30)
-    # dns_3 = models.GenericIPAddressField(
-    #     max_length=30,
-    #     help_text= 'Optional DNS'
-    # )   
+    dns_1 = models.CharField(
+    max_length=15,
+    choices=DhcpDnsChoices,
+    default=DhcpDnsChoices.TIPO_DNS1,
+    help_text='Primary dns server',
+    )
     
+    dns_2 = models.CharField(
+    max_length=15,
+    choices=DhcpDnsChoices,
+    default=DhcpDnsChoices.TIPO_DNS2,
+    help_text='Second dns server',
+    )
+
     option = models.CharField(max_length=2, choices=DhcpOpcaoChoices, default=DhcpOpcaoChoices.TIPO_43,)
     tipo = models.CharField(max_length=9, choices=DhcpChoices, default=DhcpChoices.TIPO_IPV4,)
     ip_inicial = models.GenericIPAddressField(
@@ -86,16 +94,15 @@ class Dhcp(models.Model):
     ip_final = models.GenericIPAddressField(
         help_text= 'IPV4 or IPV6 address (without Mask)'
     )    
-    ipaddresses = models.ForeignKey(  #OneToOneField(
+    ipaddresses = models.ForeignKey(  
         to='ipam.IPAddress',
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True,
-        null=True,               
+        on_delete=models.PROTECT,
+        related_name='+',                    
         verbose_name='DHCP Server'
     )
-    defaultleasetime = models.IntegerField(default=None)
-    maxleasetime = models.IntegerField(default=None)    
+    defaultleasetime = models.IntegerField(default=86400)
+    maxleasetime = models.IntegerField(default=None, null=True) 
+          
     data_criacao = models.DateTimeField(default=timezone.now())    
     name = models.ForeignKey( 
         to='dcim.Site',
@@ -111,13 +118,12 @@ class Dhcp(models.Model):
         help_text='Marque essa opcao se o DHCP for gerenciado pela SINFO'
     )
 
-    #objects = Dhcp.QuerySet.as_manager()
     csv_headers = [
         'prefix', 'address', 'gateway', 'vlan', 'vrf', 'ip_inicial', 'ip_final', 'ipaddress', 'nome']
        
        
     def __str__(self):
-        return  str (self.prefix) #or super().__str__()
+        return  str (self.prefix) 
     
     
     def get_absolute_url(self):
@@ -131,12 +137,11 @@ class Dhcp(models.Model):
         self.vlan,
         )
 
-    #class Meta:
-    #    constraints = [ models.CheckConstraint(check=~Q('ip_final' >= 'ip_inicial'), name='ip_inicial_menor')]
-        
-    #class Meta:
-     #   constraints = [ models.CheckConstraint(fields=['ip_inicial', 'ip_final'], check=Q('ip_inicial' < 'ip_final'), name='ip_inicial_menor')]
-        
+    # def clean(self):
+    #     if self.ip_inicial > self.ip_final:
+    #         raise ValidationError('The initial IP is higher than the final IP !!')
+
+   
 class Ipfixo(models.Model):
     id_ipfixo = models.AutoField(primary_key=True)     
     prefix = models.ForeignKey(  #OneToOneField(
@@ -185,12 +190,12 @@ class Ipfixo(models.Model):
         blank=True
     )
 
-    csv_headers = ['prefix', 'vlan', 'mac_address', 'address', 'host', 'num_chamado']
+    csv_headers = ['prefix','address', 'vlan', 'mac_address',  'host', 'num_chamado']
     
     def __str__(self):
         return  self.host
 
-    def get_absolute_url(self):
+    def get_absolute_url(self): #1
         return reverse('plugins:dhcp:ipfixo_list')
 
 
@@ -201,7 +206,7 @@ class Ipfixo(models.Model):
 
     #        if duplicate_mac_address and duplicate_prefixes:
     #            raise ValidationsError({
-    #        'mac_address': "Ja existe neste Prefixo",
+    #        'mac_address': "Ja existe neste Prefixo", 
     #        duplicate_mac_address.first(),
     #        })
 

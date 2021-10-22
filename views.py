@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required, login_required
 from .models import Dhcp, Ipfixo
-from .forms import DhcpForm, DhcpFilterForm, DhcpCSVForm, IpfixoForm, IpfixoFilterForm
+from .forms import DhcpForm, DhcpFilterForm, DhcpCSVForm, IpfixoForm, IpfixoFilterForm, IpfixoCSVForm
 from .filter import DhcpFilter, IpfixoFilter
 from .tables import DhcpTable, IpfixoTable
 from django.views import View
@@ -10,7 +10,7 @@ from django.views.generic.base import TemplateView
 from .utils import get_token, get_user, get_unit, get_server
 from  utilities.views import ObjectListView, ObjectEditView, ObjectDeleteView, BulkDeleteView, ComponentCreateView, ObjectView, BulkImportView
 
-# Create your views here.
+# Create your views here .
 
 #Bloco DHCP
 """Agrupa as Views da classe DHCP"""
@@ -56,10 +56,10 @@ class DhcpBulkDeleteView(PermissionRequiredMixin, BulkDeleteView):
 
 class DhcpBulkImportView(PermissionRequiredMixin, BulkImportView):
     permission_required = 'dhcp.import_dhcp'
-    queryset = Dhcp.objects.all()
+    queryset = Dhcp.objects.filter()
     model_form = DhcpCSVForm
     table = DhcpTable
-    template_name = 'dhcp/dhcp_import.html'
+    default_return_url = 'plugins:dhcp:dhcp_list'
     
 #Bloco IP Fixo
 class IpfixoView(PermissionRequiredMixin, View):     
@@ -105,7 +105,10 @@ class IpfixoBulkDeleteView(PermissionRequiredMixin, BulkDeleteView):
     default_return_url = 'plugins:dhcp:ipfixo_list'
     #Final ipfixo
 
-#class IpfixoBulkImportView(BulkImportView):
-#    queryset = Ipfixo.objects.all()
-#    model_form = IpfixoCSVForm #forms.IpfixoCSVForm
-#    table = IpfixoTable #tables.IpfixoTable
+class IpfixoBulkImportView(PermissionRequiredMixin, BulkImportView):
+    permission_required = 'ipfixo.import_ipfixo'
+    queryset = Ipfixo.objects.filter()
+    model_form = IpfixoCSVForm 
+    table = IpfixoTable 
+    default_return_url = 'plugins:dhcp:ipfixo_list'
+
