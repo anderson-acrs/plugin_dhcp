@@ -15,16 +15,16 @@ BLANK_CHOICE = (("", "---------"),)
 class DhcpForm(BootstrapMixin, forms.ModelForm):
     """ classe destinada ao model dhcp"""
    
-    vlan = DynamicModelChoiceField(
-        queryset=VLAN.objects.all(),
-        required=True,
-        label='VLAN',
-        display_field='display_name',
-        query_params={
-            'site_id': '$site',
-            'group_id': '$vlan_group',
-        }
-    )
+    # vlan = DynamicModelChoiceField(
+    #     queryset=VLAN.objects.all(),
+    #     required=True,
+    #     label='VLAN',
+    #     display_field='display_name',
+    #     query_params={
+    #         'site_id': '$site',
+    #         'group_id': '$vlan_group',
+    #     }
+    # )
     class Meta:
         model = Dhcp
         fields = [
@@ -37,7 +37,7 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
             'ip_final',  
             'tipo',
             'option',
-            'id_domain', 
+            #'id_domain', 
             'dns_1',
             'dns_2',            
             'data_criacao',            
@@ -126,7 +126,7 @@ class DhcpCSVForm(CSVModelForm): #CustomFieldModelCSVForm): 121  43
             'tipo', 
             'ipaddresses', 
             'site',
-            'id_domain',
+            #'id_domain',
             'gateway',
             'ip_inicial',
             'ip_final',             

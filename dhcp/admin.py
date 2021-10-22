@@ -6,7 +6,7 @@ from .models import Dhcp, Ipfixo, Servico
 
 @admin.register(Dhcp)
 class DhcpAdmin(admin.ModelAdmin):
-   list_display = ('prefix', 'address', 'id_domain', 'gateway', 'option', 'tipo', 'ip_inicial', 'ip_final', 'data_criacao', 'defaultleasetime','maxleasetime', 'name')
+   list_display = ('prefix', 'address', 'gateway', 'option', 'tipo', 'ip_inicial', 'ip_final', 'data_criacao', 'defaultleasetime','maxleasetime', 'name')#'id_domain',
 
 
 @admin.register(Ipfixo)

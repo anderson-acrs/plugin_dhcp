@@ -10,7 +10,7 @@ menu_items = (
             PluginMenuButton(
                 link='plugins:dhcp:dhcp_add',
                 title='Add a new dhcp',
-                icon_class='fa fa-plus',
+                icon_class='mdi mdi-plus-thick',
                 color=ButtonColorChoices.GREEN,
                 permissions=['dhcp.add_dhcp']
             ),
@@ -32,7 +32,7 @@ menu_items = (
             PluginMenuButton(
                 link='plugins:dhcp:ipfixo_add',
                 title='Add a new Address',
-                icon_class='fa fa-plus',
+                icon_class='mdi mdi-plus-thick',
                 color=ButtonColorChoices.GREEN,
                 permissions=['dhcp.add_ipfixo']
             ),

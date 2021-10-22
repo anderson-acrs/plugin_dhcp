@@ -6,9 +6,10 @@ from .forms import DhcpForm, DhcpFilterForm, DhcpCSVForm, IpfixoForm, IpfixoFilt
 from .filter import DhcpFilter, IpfixoFilter
 from .tables import DhcpTable, IpfixoTable
 from django.views import View
-from django.views.generic.base import TemplateView
+#from django.views.generic.base import TemplateView
 from .utils import get_token, get_user, get_unit, get_server
-from  utilities.views import ObjectListView, ObjectEditView, ObjectDeleteView, BulkDeleteView, ComponentCreateView, ObjectView, BulkImportView
+#from  utilities.views import ObjectListView, ObjectEditView, ObjectDeleteView, BulkDeleteView, ComponentCreateView, ObjectView, BulkImportView
+from netbox.views import generic
 
 # Create your views here .
 
@@ -22,7 +23,7 @@ class DhcpView(PermissionRequiredMixin, View):
            'dhcp': dhcp
         })
         
-class DhcpListView (PermissionRequiredMixin, ObjectListView ):
+class DhcpListView (PermissionRequiredMixin, generic.ObjectListView ):
     permission_required = 'dhcp.dhcp_view'
     queryset = Dhcp.objects.all()
     filterset = DhcpFilter
@@ -30,7 +31,7 @@ class DhcpListView (PermissionRequiredMixin, ObjectListView ):
     table = DhcpTable
     template_name = 'dhcp/dhcp_list.html'
 
-class DhcpCreateView(PermissionRequiredMixin, ObjectEditView):
+class DhcpCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'dhcp.add_dhcp'
     model = Dhcp
     queryset = Dhcp.objects.all()
@@ -43,18 +44,18 @@ class DhcpEditView(DhcpCreateView):
     
     
 
-class DhcpDeleteView(PermissionRequiredMixin, ObjectDeleteView):
+class DhcpDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'dhcp.delete_dhcp'
     model = Dhcp
     default_return_url = 'plugins:dhcp:dhcp_list'
 
-class DhcpBulkDeleteView(PermissionRequiredMixin, BulkDeleteView):
+class DhcpBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'dhcp.delete_dhcp'
     queryset = Dhcp.objects.filter()
     table = DhcpTable
     default_return_url = 'plugins:dhcp:dhcp_list'
 
-class DhcpBulkImportView(PermissionRequiredMixin, BulkImportView):
+class DhcpBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
     permission_required = 'dhcp.import_dhcp'
     queryset = Dhcp.objects.filter()
     model_form = DhcpCSVForm
@@ -70,7 +71,7 @@ class IpfixoView(PermissionRequiredMixin, View):
            'ipfixo': ipfixo
         })
 
-class IpfixoListView (PermissionRequiredMixin, ObjectListView):
+class IpfixoListView (PermissionRequiredMixin, generic.ObjectListView):
     permission_required = 'dhcp.view_ipfixo'
     #queryset = Ipfixo.objects.all() 
     queryset = Ipfixo.objects.prefetch_related(
@@ -81,7 +82,7 @@ class IpfixoListView (PermissionRequiredMixin, ObjectListView):
     table = IpfixoTable
     template_name = 'dhcp/ipfixo_list.html'
 
-class IpfixoCreateView(PermissionRequiredMixin, ObjectEditView):
+class IpfixoCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'dhcp.add_ipfixo'
     model = Ipfixo
     queryset = Ipfixo.objects.all()   
@@ -93,19 +94,19 @@ class IpfixoEditView(IpfixoCreateView):
     permission_required = 'ipfixo.change_ipfixo'
     
     
-class IpfixoDeleteView(PermissionRequiredMixin, ObjectDeleteView):
+class IpfixoDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'dhcp.delete_ipfixo'
     model = Ipfixo
     default_return_url = 'plugins:dhcp:ipfixo_list'
 
-class IpfixoBulkDeleteView(PermissionRequiredMixin, BulkDeleteView):
+class IpfixoBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'dhcp.delete_ipfixo'
     queryset = Ipfixo.objects.filter()
     table = IpfixoTable
     default_return_url = 'plugins:dhcp:ipfixo_list'
     #Final ipfixo
 
-class IpfixoBulkImportView(PermissionRequiredMixin, BulkImportView):
+class IpfixoBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
     permission_required = 'ipfixo.import_ipfixo'
     queryset = Ipfixo.objects.filter()
     model_form = IpfixoCSVForm 

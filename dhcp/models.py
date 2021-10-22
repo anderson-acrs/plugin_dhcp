@@ -7,7 +7,7 @@ from dcim.models import Site
 from django.urls import reverse
 from .choices import DhcpChoices, DhcpOpcaoChoices, DhcpDnsChoices
 from django.utils import timezone
-from sdns.models import Domain
+#from sdns.models import Domain
 
 
 
@@ -63,15 +63,15 @@ class Dhcp(models.Model):
         null=True,
         verbose_name='VRF'
     )  
-    id_domain = models.ForeignKey(
-        to='sdns.Domain',
-        on_delete=models.SET_NULL,
-        related_name='+',
-        blank=True,
-        null=True,               
-        verbose_name='Domain',
-        help_text='Identificador de dominio',
-    )
+    # id_domain = models.ForeignKey(
+    #     to='sdns.Domain',
+    #     on_delete=models.SET_NULL,
+    #     related_name='+',
+    #     blank=True,
+    #     null=True,               
+    #     verbose_name='Domain',
+    #     help_text='Identificador de dominio',
+    # )
     dns_1 = models.CharField(
     max_length=15,
     choices=DhcpDnsChoices,

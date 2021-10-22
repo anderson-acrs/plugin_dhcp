@@ -2,13 +2,14 @@ import django_filters
 import netaddr #Adicionado
 from django.db.models import Q
 from netaddr.core import AddrFormatError #Adicionado
-from utilities.filters import BaseFilterSet, NameSlugSearchFilterSet,  MultiValueCharFilter
+#from utilities.filters import BaseFilterSet, NameSlugSearchFilterSet,  MultiValueCharFilter
 from .models import Dhcp, Ipfixo
 from ipam.fields import *
 from ipam.models import *
+from netbox.filtersets import *
 
 #DHCPFIlter
-class DhcpFilter(BaseFilterSet, NameSlugSearchFilterSet):
+class DhcpFilter( PrimaryModelFilterSet):
     q = django_filters.CharFilter(
         method="search",
         label="Search",    
@@ -69,7 +70,7 @@ class DhcpFilter(BaseFilterSet, NameSlugSearchFilterSet):
 
 
 #IPFixoFilter
-class IpfixoFilter(BaseFilterSet, NameSlugSearchFilterSet):
+class IpfixoFilter( PrimaryModelFilterSet):
     q = django_filters.CharFilter(
         method="search",
         label="Search",    

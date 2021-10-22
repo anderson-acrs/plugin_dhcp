@@ -20,7 +20,7 @@ class DhcpTable(BaseTable):
             'id_prefixes',
             'ipaddresses',
             'prefix',
-            'id_domain',
+            #'id_domain',
             'vlan',
             'gateway',
             'option',
