@@ -17,7 +17,7 @@ menu_items = (
             PluginMenuButton(
                 link='plugins:dhcp:dhcp_import',
                 title='Import a New .CSV date',
-                icon_class='fa fa-download',
+                icon_class='mdi mdi-upload',
                 color=ButtonColorChoices.BLUE,
                 permissions=['dhcp.import_dhcp']
             ),
@@ -26,7 +26,7 @@ menu_items = (
 
     PluginMenuItem(
         link='plugins:dhcp:ipfixo_list',
-        link_text='Fixed Address Listing',
+        link_text='Fixed Address List',
         permissions=['dhcpd.ipfixo_view'],
         buttons=(
             PluginMenuButton(

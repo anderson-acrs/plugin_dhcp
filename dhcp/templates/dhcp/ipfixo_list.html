@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'generic/object_list.html' %}
 {% load buttons %}
 {% block content %}
 {% with config=settings.PLUGINS_CONFIG.dhcp %}
@@ -15,19 +15,7 @@
 	<div class="col-md-9 noprint">	       
     {% include 'utilities/obj_table.html' with bulk_delete_url='plugins:dhcp:ipfixo_bulk_delete' %}
     
-        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Components <span class="caret"></span>
-        </button>
-         <ul class="dropdown-menu">
-             {% if perms.dhcp.add_ipfixo %}
-                
-            {% endif %}
-        </ul>
     </div>
-      
-	<div class="col-md-3 noprint">
-		{% include 'inc/search_panel.html' %}
-	</div>
 </div>
 {% endwith %}
 {% endblock %}
