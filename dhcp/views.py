@@ -69,13 +69,22 @@ class DhcpBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
     
 #Bloco IP Fixo
 #class IpfixoView(PermissionRequiredMixin, View):  
-class IpfixoView(generic.ObjectView):     
-    permission_required = 'dhcp.ipfixo_view'        
+class IpfixoView( PermissionRequiredMixin, generic.ObjectView): 
+    queryset = Ipfixo.objects.prefetch_related(
+        'mac_address', 'host', 'prefix'  #, 'tenant', 'role', 'prefixes'
+    )     
+    #permission_required = 'dhcp.ipfixo_view'        
     def get(self, request, pk):
-        ipfixo = get_object_or_404(Ipfixo.objects.filter(id_ipfixo=pk))
+        ipfixo = get_object_or_404(self.queryset.restrict, pk=pk)
         return render(request, 'dhcp/ipfixo_list.html', {
            'ipfixo': ipfixo
         })
+
+    def get_extra_context(self, request, instance):
+        ipfixo = Ipfixo.object.restrict(request.user, 'view').filter(prefix=instance)
+        return {
+            'ipfixo': ipfixo,
+        }
 #Pagina de View OK
 class IpfixoListView ( PermissionRequiredMixin, generic.ObjectListView): #
     permission_required = 'dhcp.view_ipfixo'
@@ -87,8 +96,8 @@ class IpfixoListView ( PermissionRequiredMixin, generic.ObjectListView): #
     filterset_form = IpfixoFilterForm
     table = IpfixoTable
     template_name = 'dhcp/ipfixo_list.html'
-    #action_buttons = ('add', 'import', 'export')
-    action_buttons = ( 'export')
+    action_buttons = ('export')
+    #action_buttons = ( 'add','import','export')
 
 
 #Pagina de View OK
@@ -106,19 +115,19 @@ class IpfixoEditView(IpfixoCreateView):
     action_buttons = ( 'import','export')
     
     
-class IpfixoDeleteView(generic.ObjectDeleteView):
-    #permission_required = 'dhcp.delete_ipfixo'
+class IpfixoDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
+    permission_required = 'ipfixo.delete_ipfixo'
     queryset = Ipfixo.objects.all()
     model = Ipfixo
     #default_return_url = 'plugins:dhcp:ipfixo_list'
 
-class IpfixoBulkDeleteView(generic.BulkDeleteView):
-    #permission_required = 'dhcp.delete_ipfixo'
+class IpfixoBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
+    permission_required = 'ipfixo.delete_ipfixo'
     queryset = Ipfixo.objects.filter()
     filterset = IpfixoFilter
     table = IpfixoTable
     model_form = IpfixoForm
-    template_name = 'dhcp/ipfixo_list.html'
+    template_name = 'dhcp/ipfixo_delete.html'
     #default_return_url = 'plugins:dhcp:ipfixo_list'
     #Final ipfixo
 
