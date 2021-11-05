@@ -1,46 +1,37 @@
 
-{% extends 'base.html' %}
+{% extends 'generic/object_list.html' %}
 {% load buttons %}
 {% load helpers %}
-{% block content %}
 {% load custom_links %}
 {% load plugins %}
+{% load perms %}
+ 
 
-{% with config=settings.PLUGINS_CONFIG.dhcp %}
-<div class="pull-right noprint">    
-    {% add_button 'plugins:dhcp:dhcp_add' %}
-    <!-- botao de componentes aqui -->
-    {% if perms.dhcp.change_dhcp%}{% endif %}
-    {% if request.user.is_authenticated and table_config_form %}
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#tableconfig" title="Configure table"><i class="fa fa-cog"></i> Configure</button>
-    {% endif %}
-    <div class="clearfix"></div>
-    {% if table_config_form %}
-            {% include 'inc/table_config_form.html' %}
-        {% endif %}
-    <!-- fim_botao componentes -->
-</div>
-<h1>{% block title %}DHCP's List{% endblock %}</h1>
-<div class="row">	
-	<div class="col-md-9 noprint">	       
-    {% include 'utilities/obj_table.html' with bulk_delete_url='plugins:dhcp:dhcp_bulk_delete' %}
-    
-        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Components <span class="caret"></span>
-        </button>
-         <ul class="dropdown-menu">
-             {% if perms.dhcp.add_ipfixo %}                
-                <li><a href="{% url 'plugins:dhcp:ipfixo_add' %}?ipfixo={{ id_prefixes.pk }}&return_url={{ ipfixo.get_absolute_url }}">Add IP fixo</a></li> 
-            {% endif %}
-        </ul>
-        
+{% block title %}DHCP List{% endblock %}
+
+
+{% block extra_controls %}  
+  {% if perms.dhcp.add_dhcp %}
+    <a href="{% url 'plugins:dhcp:dhcp_add' %}?vrf={{ object.vrf.pk }}" class="btn btn-sm btn-success">
+      <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add 
+    </a>    
+  {% endif %}
+  {% if perms.ipfixo.import_dhcp %}
+    <a href="{% url 'plugins:dhcp:dhcp_import' %}?vrf={{ object.vrf.pk }}" class="btn btn-sm btn-info">
+      <i class="mdi mdi-upload" aria-hidden="true"></i> import
+    </a>    
+  {% endif %}
+  {% endblock%}  
+
+
+{% block tab_items %}
+{% if perms.dhcp.add_dhcp %}
+  <div class="card-body">	
+    <div class="table-responsive">	       
+      {% include 'utilities/obj_table.html' with bulk_delete_url='plugins:dhcp:dhcp_bulk_delete' %}
     </div>
-      
-	<div class="col-md-3 noprint">
-		{% include 'inc/search_panel.html' %}
-	</div>
-</div>
-{% endwith %}
+  </div>
+  {% endif %}
 {% endblock %}
 
 

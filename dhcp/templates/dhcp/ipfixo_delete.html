@@ -1,5 +1,6 @@
-{% extends 'generic/object_bulk_delete.html' %}
+{% extends 'utilities/confirmation_form.html' %}
 {% load buttons %}
+{% load form_helpers %}
 
 {% block message_extra %}
     <p class="text-center text-danger"><i class="mdi mdi-alert"></i> This will also delete all child inventory items of those listed.</p>

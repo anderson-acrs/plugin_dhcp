@@ -3,22 +3,38 @@
 {% load helpers %}
 {% load static %}
 {% load plugins %}
-{% block content %}
 {% load perms %}
 
 {% block title %}Fixed Address List{% endblock %}
 
-<div class="row mb-3">	
-  <div class="col col-md-12">	       
-    {% include 'utilities/obj_table.html' with table=ipfixo_table bulk_delete_url='plugins:dhcp:ipfixo_bulk_delete' %}
-  </div>
-</div>
 
-
-{% if components and perms.ipfixo.delete_ipfixo %}
-    <button type="submit" name="_delete" formaction="{% url 'dhcp:ipfixo_bulk_delete' %}?return_url={{ ipfixo.get_absolute_url }}" class="btn btn-danger btn-sm">
-       <span class="mdi mdi-trash-can-outline" aria-hidden="true"></span> Delete
-    </button>
-{% endif %}
-
+{% block extra_controls %}  
+  {% if perms.dhcp.add_ipfixo %}
+    <a href="{% url 'plugins:dhcp:ipfixo_add' %}?vrf={{ object.vrf.pk }}" class="btn btn-sm btn-success">
+      <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add 
+    </a>    
+  {% endif %}
+  {% if perms.ipfixo.import_ipfixo %}
+    <a href="{% url 'plugins:dhcp:ipfixo_import' %}?vrf={{ object.vrf.pk }}" class="btn btn-sm btn-info">
+      <i class="mdi mdi-upload" aria-hidden="true"></i> import
+    </a>    
+  {% endif %}
+ 
+  
+  {{ block.super }}
 {% endblock %}
+
+
+{% block content %}
+{% with config=settings.PLUGINS_CONFIG.dhcp %}
+  {% if perms.ipfixo.delete_ipfixo %}
+    <div class="row mb-3">	
+      <div class="col col-md-12">	       
+        {% include 'utilities/obj_table.html' with bulk_delete_url='plugins:dhcp:ipfixo_delete' %}
+      </div>
+    </div>
+  {% endif %} 
+{% endwith %}
+{% endblock %}
+
+

@@ -9,7 +9,7 @@ class DhcpSerializer(ModelSerializer):
             'prefix',
             'address', 
             'vlan',
-            'id_domain',
+           # 'id_domain',
             'gateway',
             'ipaddresses',
             #'dns_name',

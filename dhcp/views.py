@@ -31,7 +31,7 @@ class DhcpListView (PermissionRequiredMixin, generic.ObjectListView ):
     filterset_form = DhcpFilterForm
     table = DhcpTable
     action_buttons = ('export')
-    #template_name = 'dhcp/dhcp_list.html'
+    template_name = 'dhcp/dhcp_list.html'
 
 class DhcpCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'dhcp.add_dhcp'
@@ -73,9 +73,10 @@ class IpfixoView( PermissionRequiredMixin, generic.ObjectView):
     queryset = Ipfixo.objects.prefetch_related(
         'mac_address', 'host', 'prefix'  #, 'tenant', 'role', 'prefixes'
     )     
-    #permission_required = 'dhcp.ipfixo_view'        
+    permission_required = 'dhcp.ipfixo_view'        
     def get(self, request, pk):
         ipfixo = get_object_or_404(self.queryset.restrict, pk=pk)
+        #ipfixo = get_object_or_404(Ipfixo.objects.filter(id_ipfixo=pk), pk=pk)
         return render(request, 'dhcp/ipfixo_list.html', {
            'ipfixo': ipfixo
         })
@@ -116,19 +117,19 @@ class IpfixoEditView(IpfixoCreateView):
     
     
 class IpfixoDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
-    permission_required = 'ipfixo.delete_ipfixo'
+    permission_required = 'dhcp.delete_ipfixo'
     queryset = Ipfixo.objects.all()
-    model = Ipfixo
-    #default_return_url = 'plugins:dhcp:ipfixo_list'
+    template_name = 'dhcp/ipfixo_delete.html'
+    default_return_url = 'plugins:dhcp:ipfixo_list'
 
-class IpfixoBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
+class IpfixoBulkDeleteView( PermissionRequiredMixin, generic.BulkDeleteView):  #
     permission_required = 'ipfixo.delete_ipfixo'
-    queryset = Ipfixo.objects.filter()
+    queryset = Ipfixo.objects.prefetch_related('prefix', 'vrf', 'vlan')
     filterset = IpfixoFilter
     table = IpfixoTable
-    model_form = IpfixoForm
-    template_name = 'dhcp/ipfixo_delete.html'
-    #default_return_url = 'plugins:dhcp:ipfixo_list'
+    #model_form = IpfixoForm
+    template_name = 'dhcp/ipfixo_bulk_delete.html'
+    default_return_url = 'plugins:dhcp:ipfixo_list'
     #Final ipfixo
 
 class IpfixoBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
