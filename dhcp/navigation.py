@@ -36,6 +36,13 @@ menu_items = (
                 color=ButtonColorChoices.GREEN,
                 permissions=['dhcp.add_ipfixo']
             ),
+            PluginMenuButton(
+                link='plugins:dhcp:ipfixo_import',
+                title='Import a New .CSV date',
+                icon_class='mdi mdi-upload',
+                color=ButtonColorChoices.BLUE,
+                permissions=['ipfixo.import_ipfixo']
+            ),
         )
     ),
 )

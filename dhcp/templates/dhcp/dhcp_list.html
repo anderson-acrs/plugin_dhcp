@@ -24,15 +24,6 @@
   {% endblock%}  
 
 
-{% block tab_items %}
-{% if perms.dhcp.add_dhcp %}
-  <div class="card-body">	
-    <div class="table-responsive">	       
-      {% include 'utilities/obj_table.html' with bulk_delete_url='plugins:dhcp:dhcp_bulk_delete' %}
-    </div>
-  </div>
-  {% endif %}
-{% endblock %}
 
 
 
