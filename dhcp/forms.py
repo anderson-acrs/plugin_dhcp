@@ -2,7 +2,7 @@ from django import forms
 from utilities.forms import BootstrapMixin, DynamicModelChoiceField, CSVChoiceField, CSVModelForm, CSVModelChoiceField
 from .models import Dhcp, Ipfixo
 from dhcp.choices import DhcpOpcaoChoices, DhcpChoices, DhcpDnsChoices
-from extras.forms import CustomFieldModelCSVForm
+from extras.forms import CustomFieldModelCSVForm, CustomFieldModelForm
 from ipam.models import *
 from dcim.models import Site
 
@@ -12,7 +12,7 @@ from dcim.models import Site
 BLANK_CHOICE = (("", "---------"),)
 
 
-class DhcpForm(BootstrapMixin, forms.ModelForm):
+class DhcpForm(BootstrapMixin,  CustomFieldModelForm): #forms.ModelForm,
     """ classe destinada ao model dhcp"""
    
     # vlan = DynamicModelChoiceField(
@@ -48,7 +48,7 @@ class DhcpForm(BootstrapMixin, forms.ModelForm):
                
         ]
 
-class DhcpFilterForm(BootstrapMixin, forms.ModelForm):
+class DhcpFilterForm(BootstrapMixin, CustomFieldModelForm): #forms.ModelForm,
     """ classe destinada ao model dhcp"""
     q = forms.CharField(
         required=False,
@@ -136,7 +136,7 @@ class DhcpCSVForm(CSVModelForm): #CustomFieldModelCSVForm): 121  43
         ]
 
 
-class IpfixoForm(BootstrapMixin, forms.ModelForm):
+class IpfixoForm(BootstrapMixin, CustomFieldModelForm): #forms.ModelForm, 
     """ classe destinada ao model Ipfixo"""
     class Meta:
         model = Ipfixo
@@ -149,10 +149,9 @@ class IpfixoForm(BootstrapMixin, forms.ModelForm):
             'num_chamado',
             'comments',                       
         ]
-class IpfixoFilterForm(BootstrapMixin, forms.ModelForm):
+class IpfixoFilterForm(BootstrapMixin, CustomFieldModelForm): # forms.ModelForm,
     """ classe destinada ao model Ipfixo"""
-    #model = Ipfixo
-    #field_order = ['q','host','mac_address']
+    
     q = forms.CharField(
         required=False,
         label="Buscador",

@@ -191,12 +191,19 @@ class Ipfixo(models.Model):
     )
 
     csv_headers = ['prefix','address', 'vlan', 'mac_address',  'host', 'num_chamado']
+
+    class Meta:
+        ordering = ('prefix','pk')
     
     def __str__(self):
-        return  self.host
+        return  f' {self.host} ({self.id_ipfixo})'
+ #   # def __str__(self):
+ #   #    return  self.host
 
     def get_absolute_url(self): #1
-        return reverse('plugins:dhcp:ipfixo_list')
+        return reverse('plugins:dhcp:ipfixo_list')#, kwargs=[self.pk])
+
+    
 
 
     #def clean(self):

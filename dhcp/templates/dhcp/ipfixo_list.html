@@ -8,33 +8,7 @@
 {% block title %}Fixed Address List{% endblock %}
 
 
-{% block extra_controls %}  
-  {% if perms.dhcp.add_ipfixo %}
-    <a href="{% url 'plugins:dhcp:ipfixo_add' %}?vrf={{ object.vrf.pk }}" class="btn btn-sm btn-success">
-      <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add 
-    </a>    
-  {% endif %}
-  {% if perms.ipfixo.import_ipfixo %}
-    <a href="{% url 'plugins:dhcp:ipfixo_import' %}?vrf={{ object.vrf.pk }}" class="btn btn-sm btn-info">
-      <i class="mdi mdi-upload" aria-hidden="true"></i> import
-    </a>    
-  {% endif %}
- 
-  
-  {{ block.super }}
-{% endblock %}
 
 
-{% block content %}
-{% with config=settings.PLUGINS_CONFIG.dhcp %}
-  {% if perms.ipfixo.delete_ipfixo %}
-    <div class="row mb-3">	
-      <div class="col col-md-12">	       
-        {% include 'utilities/obj_table.html' with bulk_delete_url='plugins:dhcp:ipfixo_delete' %}
-      </div>
-    </div>
-  {% endif %} 
-{% endwith %}
-{% endblock %}
 
 

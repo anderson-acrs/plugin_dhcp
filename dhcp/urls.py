@@ -13,10 +13,7 @@ urlpatterns = [
     path('<int:pk>/delete/', views.DhcpDeleteView.as_view(), name='dhcp_delete'),
     path('<int:pk>/edit/', views.DhcpEditView.as_view(), name='dhcp_edit'),
     path('import', views.DhcpBulkImportView.as_view(), name='dhcp_import'),
-    # path('edit/<int:pk>/', views.DhcpEditView.as_view(), name='dhcp_edit'),
-    # path('api/', include('appview.api.urls')),
-    # path('random/', views.RandomSwitchView.as_view(), name='random_switch'),
-
+   
 
     #IP Fixo
     path('ipfixo/', views.IpfixoListView.as_view() , name='ipfixo_list'),
@@ -28,10 +25,5 @@ urlpatterns = [
     path('ipfixo/import/', views.IpfixoBulkImportView.as_view(), name='ipfixo_import'),
 
 
-    #Responsavel
-    #path('responsavel/', views.ResponsavelObjetcView.as_view(), name='resp' ),
-    #path('responsavel/<name>/', views.RespView.as_view(), name='responsavel' ),
-   # path('responsavel/add/', views.ResponsavelTemplateCreateView.as_view(), name='responsavel_add' )
-     
 
 ] 
