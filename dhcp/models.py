@@ -7,8 +7,6 @@ from dcim.models import Site
 from django.urls import reverse
 from .choices import DhcpChoices, DhcpOpcaoChoices, DhcpDnsChoices
 from django.utils import timezone
-#from sdns.models import Domain
-
 
 
 # Create your models here. #anderson
@@ -197,13 +195,10 @@ class Ipfixo(models.Model):
     
     def __str__(self):
         return  f' {self.host} ({self.id_ipfixo})'
- #   # def __str__(self):
- #   #    return  self.host
+ 
 
     def get_absolute_url(self): #1
         return reverse('plugins:dhcp:ipfixo_list')#, kwargs=[self.pk])
-
-    
 
 
     #def clean(self):

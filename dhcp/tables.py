@@ -27,7 +27,7 @@ class DhcpTable(BaseTable):
             'tipo',
             'ip_inicial',
             'ip_final',
-            'name',# local
+            'name',
             'data_criacao',
             'defaultleasetime',
             'maxleasetime',
@@ -53,9 +53,5 @@ class IpfixoTable(BaseTable):
             'prefix',
             'mac_address',
             'address',
-            'vlan',
-            #'ipaddress',
-            #'ip_host',
-            
-            
+            'vlan',            
         )

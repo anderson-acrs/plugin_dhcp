@@ -15,16 +15,7 @@ BLANK_CHOICE = (("", "---------"),)
 class DhcpForm(BootstrapMixin,  CustomFieldModelForm): #forms.ModelForm,
     """ classe destinada ao model dhcp"""
    
-    # vlan = DynamicModelChoiceField(
-    #     queryset=VLAN.objects.all(),
-    #     required=True,
-    #     label='VLAN',
-    #     display_field='display_name',
-    #     query_params={
-    #         'site_id': '$site',
-    #         'group_id': '$vlan_group',
-    #     }
-    # )
+    
     class Meta:
         model = Dhcp
         fields = [
@@ -186,24 +177,7 @@ class IpfixoCSVForm(CSVModelForm):
         help_text='Prefix',
         error_messages={"invalid_choice": "Site not found",},
     )
-    # mac_address = CSVModelChoiceField(
-    #     queryset=Ipfixo.objects.all(),
-    #     to_field_name='mac_address',
-    #     required=True,
-    #     help_text='Mac Address',        
-    # )
-    # host = CSVModelChoiceField(
-    #     queryset=Ipfixo.objects.all(),
-    #     to_field_name='host',
-    #     required=True,
-    #     help_text='Host',        
-    # )
-    # num_chamado = CSVModelChoiceField(
-    #     queryset=Ipfixo.objects.all(),
-    #     to_field_name='num_chamado',
-    #     required=False,
-    #     help_text='Numero do Chamado',        
-    # )
+    
     class Meta:
         #fields = Ipfixo.csv_headers
         model = Ipfixo

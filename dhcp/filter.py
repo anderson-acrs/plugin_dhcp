@@ -2,7 +2,6 @@ import django_filters
 import netaddr #Adicionado
 from django.db.models import Q
 from netaddr.core import AddrFormatError #Adicionado
-#from utilities.filters import BaseFilterSet, NameSlugSearchFilterSet,  MultiValueCharFilter
 from .models import Dhcp, Ipfixo
 from ipam.fields import *
 from ipam.models import *
@@ -37,7 +36,7 @@ class DhcpFilter( PrimaryModelFilterSet):
         qs_filter = ( Q(id_prefixes__icontains=value) |                       
                       Q(option__icontains=value)   
                     | Q(tipo__icontains=value) 
-                    #| Q(address__icontains=value)    #istartswith                           
+                                              
         )
         return queryset.filter(qs_filter)
         
@@ -91,13 +90,13 @@ class IpfixoFilter( PrimaryModelFilterSet):
             'prefix',          
             'vlan',
             ]
-    def search(self, queryset, name, value): #acrescentei o name e tirei o host
+    def search(self, queryset, name, value): 
         if not value.strip():
             return queryset
         qs_filter = (
             Q(host__icontains=value)
           | Q(mac_address__icontains=value) 
-          #| Q(address__icontains=value)                   
+                             
         )  
         try:#
             qs_filter |= Q(id_ipfixo=int(value.strip()))
