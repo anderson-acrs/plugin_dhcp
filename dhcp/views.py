@@ -127,5 +127,5 @@ class IpfixoBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
     queryset = Ipfixo.objects.filter()
     model_form = IpfixoCSVForm 
     table = IpfixoTable 
-    default_return_url = 'plugins:dhcp:ipfixo_list'
+    default_return_url ='plugins:dhcp:ipfixo_list'
 
